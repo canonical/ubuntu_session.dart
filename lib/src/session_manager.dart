@@ -34,6 +34,12 @@ class SessionManager {
   /// The name of the session that has been loaded.
   String get sessionName => _getProperty('SessionName', '');
 
+  /// Request a reboot dialog.
+  Future<void> reboot() {
+    return _object.callMethod(kBus, 'Reboot', [],
+        replySignature: DBusSignature(''));
+  }
+
   /// Connects to the Session Manager service.
   Future<void> connect() {
     _propertySubscription ??= _object.propertiesChanged.listen((signal) {

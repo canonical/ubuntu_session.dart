@@ -35,6 +35,15 @@ void main() {
     expect(sessionIsActive, true);
     await manager.close();
   });
+
+  test('reboot', () async {
+    final object = createMockRemoteObject();
+    final manager = SessionManager(object: object);
+    await manager.reboot();
+    verify(object.callMethod(kBus, 'Reboot', [],
+            replySignature: DBusSignature('')))
+        .called(1);
+  });
 }
 
 MockDBusRemoteObject createMockRemoteObject({
@@ -47,5 +56,7 @@ MockDBusRemoteObject createMockRemoteObject({
   when(object.propertiesChanged)
       .thenAnswer((_) => propertiesChanged ?? const Stream.empty());
   when(object.getAllProperties(kBus)).thenAnswer((_) async => properties ?? {});
+  when(object.callMethod(kBus, 'Reboot', [], replySignature: DBusSignature('')))
+      .thenAnswer((_) async => DBusMethodSuccessResponse());
   return object;
 }
