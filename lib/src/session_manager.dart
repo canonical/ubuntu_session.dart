@@ -40,6 +40,27 @@ class SessionManager {
         replySignature: DBusSignature(''));
   }
 
+  /// Request a shutdown dialog.
+  Future<void> shutdown() {
+    return _object.callMethod(kBus, 'Shutdown', [],
+        replySignature: DBusSignature(''));
+  }
+
+  /// True if shutdown is available to the user, false otherwise
+  Future<bool> canShutdown() async {
+    return _object
+        .callMethod(kBus, 'CanShutdown', [], replySignature: DBusSignature('b'))
+        .then((response) => response.values.first.asBoolean());
+  }
+
+  /// True if the session has entered the Running phase, false otherwise
+  Future<bool> isSessionRunning() async {
+    return _object
+        .callMethod(kBus, 'IsSessionRunning', [],
+            replySignature: DBusSignature('b'))
+        .then((response) => response.values.first.asBoolean());
+  }
+
   /// Connects to the Session Manager service.
   Future<void> connect() {
     _propertySubscription ??= _object.propertiesChanged.listen((signal) {
