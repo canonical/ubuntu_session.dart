@@ -62,7 +62,11 @@ class SessionManager {
   }
 
   /// Connects to the Session Manager service.
-  Future<void> connect() {
+  Future<void> connect() async {
+    // Already connected
+    if (_propertySubscription != null) {
+      return;
+    }
     _propertySubscription ??= _object.propertiesChanged.listen((signal) {
       if (signal.propertiesInterface == kBus) {
         _updateProperties(signal.changedProperties);
