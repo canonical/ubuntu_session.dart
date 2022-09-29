@@ -1,6 +1,5 @@
 name: session_manager
-description: "Session Manager"
-homepage: https://wiki.gnome.org/Projects/SessionManagement
+description: "Native Dart client library to access the GNOME Session Manager"
 repository: https://github.com/canonical/session_manager.dart
 issue_tracker: https://github.com/canonical/session_manager.dart/issues
 version: 0.0.1
