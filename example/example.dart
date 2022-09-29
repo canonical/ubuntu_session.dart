@@ -1,5 +1,5 @@
 import 'package:dbus/dbus.dart';
-import 'package:session_manager/src/session_manager.dart';
+import 'package:ubuntu_session/ubuntu_session.dart';
 
 void main() async {
   final manager = SessionManager();

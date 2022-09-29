@@ -1,9 +1,9 @@
 import 'package:dbus/dbus.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:session_manager/src/constants.dart';
-import 'package:session_manager/src/session_manager.dart';
 import 'package:test/test.dart';
+import 'package:ubuntu_session/src/constants.dart';
+import 'package:ubuntu_session/ubuntu_session.dart';
 
 import 'session_manager_test.mocks.dart';
 
