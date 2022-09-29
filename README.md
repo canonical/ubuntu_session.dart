@@ -1,5 +1,37 @@
 # session_manager.dart
-Native Dart client library to access Session Manager
+Native Dart client library to access the GNOME Session Manager
+
+[![CI](https://github.com/canonical/session_manager.dart/workflows/Tests/badge.svg)](https://github.com/canonical/session_manager.dart/actions/workflows/tests.yaml)
+[![codecov](https://codecov.io/gh/canonical/session_manager.dart/branch/main/graph/badge.svg)](https://codecov.io/gh/canonical/session_manager.dart)
+
+```dart
+import 'package:dbus/dbus.dart';
+import 'package:session_manager/src/session_manager.dart';
+
+void main() async {
+  final manager = SessionManager();
+  await manager.connect();
+  try {
+    await manager.reboot();
+  } on DBusMethodResponseException catch (e) {
+    print('Error: $e');
+  }
+  await manager.close();
+}
+```
+
+## Implemented so far:
+### `org.gnome.SessionManager`
+#### Methods
+- `Shutdown()`
+- `Reboot()`
+- `CanShutdown()`
+- `IsSessionRunning()`
+#### Properties
+- `SessionName`
+- `SessionIsActive`
+
+Please refer to the [GNOME Session Documentation](https://lira.no-ip.org:8443/doc/gnome-session/dbus/gnome-session.html) for further details.
 
 ## Contributing to session_manager.dart
 

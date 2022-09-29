@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'constants.dart';
 import 'util.dart';
 
+/// The client that connects to the GNOME Session Manager
 class SessionManager {
   SessionManager({
     DBusClient? bus,
