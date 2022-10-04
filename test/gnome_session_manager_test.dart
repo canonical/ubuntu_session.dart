@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 import 'package:ubuntu_session/src/constants.dart';
 import 'package:ubuntu_session/ubuntu_session.dart';
 
-import 'session_manager_test.mocks.dart';
+import 'gnome_session_manager_test.mocks.dart';
 
 @GenerateMocks([DBusClient, DBusRemoteObject])
 void main() {
@@ -13,7 +13,7 @@ void main() {
     final object = createMockRemoteObject();
     final bus = object.client as MockDBusClient;
 
-    final manager = SessionManager(object: object);
+    final manager = GnomeSessionManager(object: object);
     await manager.connect();
     verify(object.getAllProperties(kBus)).called(1);
 
@@ -27,7 +27,7 @@ void main() {
       'SessionName': const DBusString('ubuntu'),
     });
 
-    final manager = SessionManager(object: object);
+    final manager = GnomeSessionManager(object: object);
     await manager.connect();
     final sessionName = manager.sessionName;
     final sessionIsActive = manager.sessionIsActive;
@@ -36,9 +36,25 @@ void main() {
     await manager.close();
   });
 
+  test('logout', () async {
+    final object = createMockRemoteObject();
+    final manager = GnomeSessionManager(object: object);
+    await manager
+        .logout(mode: {GnomeLogoutMode.force, GnomeLogoutMode.noConfirm});
+    verify(object.callMethod(
+      kBus,
+      'Logout',
+      [
+        DBusUint32(
+            GnomeLogoutMode.force.index | GnomeLogoutMode.noConfirm.index)
+      ],
+      replySignature: DBusSignature(''),
+    )).called(1);
+  });
+
   test('reboot', () async {
     final object = createMockRemoteObject();
-    final manager = SessionManager(object: object);
+    final manager = GnomeSessionManager(object: object);
     await manager.reboot();
     verify(object.callMethod(kBus, 'Reboot', [],
             replySignature: DBusSignature('')))
@@ -47,7 +63,7 @@ void main() {
 
   test('shutdown', () async {
     final object = createMockRemoteObject();
-    final manager = SessionManager(object: object);
+    final manager = GnomeSessionManager(object: object);
     await manager.shutdown();
     verify(object.callMethod(kBus, 'Shutdown', [],
             replySignature: DBusSignature('')))
@@ -56,7 +72,7 @@ void main() {
 
   test('can shutdown', () async {
     final object = createMockRemoteObject(canShutdown: true);
-    final manager = SessionManager(object: object);
+    final manager = GnomeSessionManager(object: object);
     final canShutdown = await manager.canShutdown();
     verify(object.callMethod(kBus, 'CanShutdown', [],
             replySignature: DBusSignature('b')))
@@ -66,7 +82,7 @@ void main() {
 
   test('is session running', () async {
     final object = createMockRemoteObject(isSessionRunning: true);
-    final manager = SessionManager(object: object);
+    final manager = GnomeSessionManager(object: object);
     final isSessionRunning = await manager.isSessionRunning();
     verify(object.callMethod(kBus, 'IsSessionRunning', [],
             replySignature: DBusSignature('b')))
@@ -87,6 +103,9 @@ MockDBusRemoteObject createMockRemoteObject({
   when(object.propertiesChanged)
       .thenAnswer((_) => propertiesChanged ?? const Stream.empty());
   when(object.getAllProperties(kBus)).thenAnswer((_) async => properties ?? {});
+  when(object.callMethod(kBus, 'Logout', any,
+          replySignature: DBusSignature('')))
+      .thenAnswer((_) async => DBusMethodSuccessResponse());
   when(object.callMethod(kBus, 'Reboot', [], replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
   when(object.callMethod(kBus, 'Shutdown', [],

@@ -6,9 +6,21 @@ import 'package:meta/meta.dart';
 import 'constants.dart';
 import 'util.dart';
 
+enum GnomeLogoutMode {
+  /// Normal
+  normal,
+
+  /// No confirmation interface should be shown.
+  noConfirm,
+
+  /// Forcefully logout. No confirmation will be shown and any inhibitors will
+  /// be ignored.
+  force,
+}
+
 /// The client that connects to the GNOME Session Manager
-class SessionManager {
-  SessionManager({
+class GnomeSessionManager {
+  GnomeSessionManager({
     DBusClient? bus,
     @visibleForTesting DBusRemoteObject? object,
   })  : _bus = bus,
@@ -34,6 +46,16 @@ class SessionManager {
 
   /// The name of the session that has been loaded.
   String get sessionName => _getProperty('SessionName', '');
+
+  /// Request a logout dialog.
+  Future<void> logout({Set<GnomeLogoutMode> mode = const {}}) {
+    var logoutMode = 0;
+    for (final flag in mode) {
+      logoutMode |= flag.index;
+    }
+    return _object.callMethod(kBus, 'Logout', [DBusUint32(logoutMode)],
+        replySignature: DBusSignature(''));
+  }
 
   /// Request a reboot dialog.
   Future<void> reboot() {

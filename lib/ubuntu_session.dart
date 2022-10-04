@@ -1,3 +1,3 @@
 library ubuntu_session;
 
-export 'src/session_manager.dart';
+export 'src/gnome_session_manager.dart';
