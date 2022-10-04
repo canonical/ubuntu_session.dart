@@ -2,20 +2,21 @@ import 'package:dbus/dbus.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-import 'package:ubuntu_session/src/constants.dart';
 import 'package:ubuntu_session/ubuntu_session.dart';
 
 import 'gnome_session_manager_test.mocks.dart';
 
 @GenerateMocks([DBusClient, DBusRemoteObject])
 void main() {
+  final busName = GnomeSessionManager.busName;
+
   test('connect and disconnect', () async {
     final object = createMockRemoteObject();
     final bus = object.client as MockDBusClient;
 
     final manager = GnomeSessionManager(object: object);
     await manager.connect();
-    verify(object.getAllProperties(kBus)).called(1);
+    verify(object.getAllProperties(busName)).called(1);
 
     await manager.close();
     verify(bus.close()).called(1);
@@ -42,7 +43,7 @@ void main() {
     await manager
         .logout(mode: {GnomeLogoutMode.force, GnomeLogoutMode.noConfirm});
     verify(object.callMethod(
-      kBus,
+      busName,
       'Logout',
       [
         DBusUint32(
@@ -56,7 +57,7 @@ void main() {
     final object = createMockRemoteObject();
     final manager = GnomeSessionManager(object: object);
     await manager.reboot();
-    verify(object.callMethod(kBus, 'Reboot', [],
+    verify(object.callMethod(busName, 'Reboot', [],
             replySignature: DBusSignature('')))
         .called(1);
   });
@@ -65,7 +66,7 @@ void main() {
     final object = createMockRemoteObject();
     final manager = GnomeSessionManager(object: object);
     await manager.shutdown();
-    verify(object.callMethod(kBus, 'Shutdown', [],
+    verify(object.callMethod(busName, 'Shutdown', [],
             replySignature: DBusSignature('')))
         .called(1);
   });
@@ -74,7 +75,7 @@ void main() {
     final object = createMockRemoteObject(canShutdown: true);
     final manager = GnomeSessionManager(object: object);
     final canShutdown = await manager.canShutdown();
-    verify(object.callMethod(kBus, 'CanShutdown', [],
+    verify(object.callMethod(busName, 'CanShutdown', [],
             replySignature: DBusSignature('b')))
         .called(1);
     expect(canShutdown, true);
@@ -84,7 +85,7 @@ void main() {
     final object = createMockRemoteObject(isSessionRunning: true);
     final manager = GnomeSessionManager(object: object);
     final isSessionRunning = await manager.isSessionRunning();
-    verify(object.callMethod(kBus, 'IsSessionRunning', [],
+    verify(object.callMethod(busName, 'IsSessionRunning', [],
             replySignature: DBusSignature('b')))
         .called(1);
     expect(isSessionRunning, true);
@@ -99,23 +100,26 @@ MockDBusRemoteObject createMockRemoteObject({
 }) {
   final dbus = MockDBusClient();
   final object = MockDBusRemoteObject();
+  final busName = GnomeSessionManager.busName;
   when(object.client).thenReturn(dbus);
   when(object.propertiesChanged)
       .thenAnswer((_) => propertiesChanged ?? const Stream.empty());
-  when(object.getAllProperties(kBus)).thenAnswer((_) async => properties ?? {});
-  when(object.callMethod(kBus, 'Logout', any,
+  when(object.getAllProperties(busName))
+      .thenAnswer((_) async => properties ?? {});
+  when(object.callMethod(busName, 'Logout', any,
           replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
-  when(object.callMethod(kBus, 'Reboot', [], replySignature: DBusSignature('')))
-      .thenAnswer((_) async => DBusMethodSuccessResponse());
-  when(object.callMethod(kBus, 'Shutdown', [],
+  when(object.callMethod(busName, 'Reboot', [],
           replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
-  when(object.callMethod(kBus, 'CanShutdown', [],
+  when(object.callMethod(busName, 'Shutdown', [],
+          replySignature: DBusSignature('')))
+      .thenAnswer((_) async => DBusMethodSuccessResponse());
+  when(object.callMethod(busName, 'CanShutdown', [],
           replySignature: DBusSignature('b')))
       .thenAnswer(
           (_) async => DBusMethodSuccessResponse([DBusBoolean(canShutdown)]));
-  when(object.callMethod(kBus, 'IsSessionRunning', [],
+  when(object.callMethod(busName, 'IsSessionRunning', [],
           replySignature: DBusSignature('b')))
       .thenAnswer((_) async =>
           DBusMethodSuccessResponse([DBusBoolean(isSessionRunning)]));

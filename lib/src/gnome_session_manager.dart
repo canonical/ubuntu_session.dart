@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dbus/dbus.dart';
 import 'package:meta/meta.dart';
 
-import 'constants.dart';
 import 'util.dart';
 
 enum GnomeLogoutMode {
@@ -29,10 +28,13 @@ class GnomeSessionManager {
   static DBusRemoteObject _createRemoteObject(DBusClient? bus) {
     return DBusRemoteObject(
       bus ?? DBusClient.session(),
-      name: kBus,
-      path: DBusObjectPath('/org/gnome/SessionManager'),
+      name: busName,
+      path: DBusObjectPath(objectPath),
     );
   }
+
+  static final String busName = 'org.gnome.SessionManager';
+  static final String objectPath = '/org/gnome/SessionManager';
 
   final DBusClient? _bus;
   final DBusRemoteObject _object;
@@ -53,33 +55,34 @@ class GnomeSessionManager {
     for (final flag in mode) {
       logoutMode |= flag.index;
     }
-    return _object.callMethod(kBus, 'Logout', [DBusUint32(logoutMode)],
+    return _object.callMethod(busName, 'Logout', [DBusUint32(logoutMode)],
         replySignature: DBusSignature(''));
   }
 
   /// Request a reboot dialog.
   Future<void> reboot() {
-    return _object.callMethod(kBus, 'Reboot', [],
+    return _object.callMethod(busName, 'Reboot', [],
         replySignature: DBusSignature(''));
   }
 
   /// Request a shutdown dialog.
   Future<void> shutdown() {
-    return _object.callMethod(kBus, 'Shutdown', [],
+    return _object.callMethod(busName, 'Shutdown', [],
         replySignature: DBusSignature(''));
   }
 
   /// True if shutdown is available to the user, false otherwise
   Future<bool> canShutdown() async {
     return _object
-        .callMethod(kBus, 'CanShutdown', [], replySignature: DBusSignature('b'))
+        .callMethod(busName, 'CanShutdown', [],
+            replySignature: DBusSignature('b'))
         .then((response) => response.values.first.asBoolean());
   }
 
   /// True if the session has entered the Running phase, false otherwise
   Future<bool> isSessionRunning() async {
     return _object
-        .callMethod(kBus, 'IsSessionRunning', [],
+        .callMethod(busName, 'IsSessionRunning', [],
             replySignature: DBusSignature('b'))
         .then((response) => response.values.first.asBoolean());
   }
@@ -91,11 +94,11 @@ class GnomeSessionManager {
       return;
     }
     _propertySubscription ??= _object.propertiesChanged.listen((signal) {
-      if (signal.propertiesInterface == kBus) {
+      if (signal.propertiesInterface == busName) {
         _updateProperties(signal.changedProperties);
       }
     });
-    return _object.getAllProperties(kBus).then(_updateProperties);
+    return _object.getAllProperties(busName).then(_updateProperties);
   }
 
   /// Closes connection to the Session Manager service.
