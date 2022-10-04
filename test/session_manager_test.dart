@@ -36,6 +36,18 @@ void main() {
     await manager.close();
   });
 
+  test('logout', () async {
+    final object = createMockRemoteObject();
+    final manager = SessionManager(object: object);
+    await manager.logout(mode: {SmLogoutMode.force, SmLogoutMode.noConfirm});
+    verify(object.callMethod(
+      kBus,
+      'Logout',
+      [DBusUint32(SmLogoutMode.force.index | SmLogoutMode.noConfirm.index)],
+      replySignature: DBusSignature(''),
+    )).called(1);
+  });
+
   test('reboot', () async {
     final object = createMockRemoteObject();
     final manager = SessionManager(object: object);
@@ -87,6 +99,9 @@ MockDBusRemoteObject createMockRemoteObject({
   when(object.propertiesChanged)
       .thenAnswer((_) => propertiesChanged ?? const Stream.empty());
   when(object.getAllProperties(kBus)).thenAnswer((_) async => properties ?? {});
+  when(object.callMethod(kBus, 'Logout', any,
+          replySignature: DBusSignature('')))
+      .thenAnswer((_) async => DBusMethodSuccessResponse());
   when(object.callMethod(kBus, 'Reboot', [], replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
   when(object.callMethod(kBus, 'Shutdown', [],
