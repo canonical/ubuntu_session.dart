@@ -110,6 +110,9 @@ class GnomeSessionManager {
     }
   }
 
+  /// Stream of property names as they change.
+  Stream<List<String>> get propertiesChanged => _propertyController.stream;
+
   T _getProperty<T>(String name, T defaultValue) {
     return _properties.get(name) ?? defaultValue;
   }
