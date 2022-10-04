@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 import 'constants.dart';
 import 'util.dart';
 
-enum SmLogoutMode {
+enum GnomeLogoutMode {
   /// Normal
   normal,
 
@@ -19,8 +19,8 @@ enum SmLogoutMode {
 }
 
 /// The client that connects to the GNOME Session Manager
-class SessionManager {
-  SessionManager({
+class GnomeSessionManager {
+  GnomeSessionManager({
     DBusClient? bus,
     @visibleForTesting DBusRemoteObject? object,
   })  : _bus = bus,
@@ -48,7 +48,7 @@ class SessionManager {
   String get sessionName => _getProperty('SessionName', '');
 
   /// Request a logout dialog.
-  Future<void> logout({Set<SmLogoutMode> mode = const {}}) {
+  Future<void> logout({Set<GnomeLogoutMode> mode = const {}}) {
     var logoutMode = 0;
     for (final flag in mode) {
       logoutMode |= flag.index;

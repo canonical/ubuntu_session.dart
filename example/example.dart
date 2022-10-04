@@ -2,7 +2,7 @@ import 'package:dbus/dbus.dart';
 import 'package:ubuntu_session/ubuntu_session.dart';
 
 void main() async {
-  final manager = SessionManager();
+  final manager = GnomeSessionManager();
   await manager.connect();
   try {
     await manager.reboot();
