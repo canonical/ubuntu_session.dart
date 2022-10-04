@@ -1,5 +1,5 @@
 # ubuntu_session.dart
-Native Dart client library to access the GNOME Session Manager
+Native Dart client library to access the GNOME Session Manager (+ more to come)
 
 [![CI](https://github.com/canonical/ubuntu_session.dart/workflows/Tests/badge.svg)](https://github.com/canonical/ubuntu_session.dart/actions/workflows/tests.yaml)
 [![codecov](https://codecov.io/gh/canonical/ubuntu_session.dart/branch/main/graph/badge.svg)](https://codecov.io/gh/canonical/ubuntu_session.dart)
@@ -9,7 +9,7 @@ import 'package:dbus/dbus.dart';
 import 'package:ubuntu_session/ubuntu_session.dart';
 
 void main() async {
-  final manager = SessionManager();
+  final manager = GnomeSessionManager();
   await manager.connect();
   try {
     await manager.reboot();
