@@ -32,9 +32,15 @@ class SystemdSessionManager {
 
   bool get onExternalPower => _getProperty('OnExternalPower', false);
 
-  /// Reboot the system.
-  Future<void> reboot(bool interactive) {
-    return _object.callMethod(busName, 'Reboot', [DBusBoolean(interactive)],
+  /// Halt the system.
+  Future<void> halt(bool interactive) {
+    return _object.callMethod(busName, 'Halt', [DBusBoolean(interactive)],
+        replySignature: DBusSignature(''));
+  }
+
+  /// Hibernate the system.
+  Future<void> hibernate(bool interactive) {
+    return _object.callMethod(busName, 'Hibernate', [DBusBoolean(interactive)],
         replySignature: DBusSignature(''));
   }
 
@@ -44,9 +50,27 @@ class SystemdSessionManager {
         replySignature: DBusSignature(''));
   }
 
-  Future<String> canReboot() {
+  /// Reboot the system.
+  Future<void> reboot(bool interactive) {
+    return _object.callMethod(busName, 'Reboot', [DBusBoolean(interactive)],
+        replySignature: DBusSignature(''));
+  }
+
+  /// Suspend the system.
+  Future<void> suspend(bool interactive) {
+    return _object.callMethod(busName, 'Suspend', [DBusBoolean(interactive)],
+        replySignature: DBusSignature(''));
+  }
+
+  Future<String> canHalt() {
     return _object
-        .callMethod(busName, 'CanReboot', [],
+        .callMethod(busName, 'CanHalt', [], replySignature: DBusSignature('s'))
+        .then((response) => response.values.first.asString());
+  }
+
+  Future<String> canHibernate() {
+    return _object
+        .callMethod(busName, 'CanHibernate', [],
             replySignature: DBusSignature('s'))
         .then((response) => response.values.first.asString());
   }
@@ -54,6 +78,20 @@ class SystemdSessionManager {
   Future<String> canPowerOff() {
     return _object
         .callMethod(busName, 'CanPowerOff', [],
+            replySignature: DBusSignature('s'))
+        .then((response) => response.values.first.asString());
+  }
+
+  Future<String> canSuspend() {
+    return _object
+        .callMethod(busName, 'CanSuspend', [],
+            replySignature: DBusSignature('s'))
+        .then((response) => response.values.first.asString());
+  }
+
+  Future<String> canReboot() {
+    return _object
+        .callMethod(busName, 'CanReboot', [],
             replySignature: DBusSignature('s'))
         .then((response) => response.values.first.asString());
   }
