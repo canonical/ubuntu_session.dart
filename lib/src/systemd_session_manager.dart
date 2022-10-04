@@ -15,13 +15,14 @@ class SystemdSessionManager {
 
   static DBusRemoteObject _createRemoteObject(DBusClient? bus) {
     return DBusRemoteObject(
-      bus ?? DBusClient.session(),
+      bus ?? DBusClient.system(),
       name: busName,
       path: DBusObjectPath(objectPath),
     );
   }
 
-  static final String busName = 'org.freedesktop.login1.Manager';
+  static final String busName = 'org.freedesktop.login1';
+  static final String managerName = 'org.freedesktop.login1.Manager';
   static final String objectPath = '/org/freedesktop/login1';
 
   final DBusClient? _bus;
@@ -34,64 +35,68 @@ class SystemdSessionManager {
 
   /// Halt the system.
   Future<void> halt(bool interactive) {
-    return _object.callMethod(busName, 'Halt', [DBusBoolean(interactive)],
+    return _object.callMethod(managerName, 'Halt', [DBusBoolean(interactive)],
         replySignature: DBusSignature(''));
   }
 
   /// Hibernate the system.
   Future<void> hibernate(bool interactive) {
-    return _object.callMethod(busName, 'Hibernate', [DBusBoolean(interactive)],
+    return _object.callMethod(
+        managerName, 'Hibernate', [DBusBoolean(interactive)],
         replySignature: DBusSignature(''));
   }
 
   /// Power off the system.
   Future<void> powerOff(bool interactive) {
-    return _object.callMethod(busName, 'PowerOff', [DBusBoolean(interactive)],
+    return _object.callMethod(
+        managerName, 'PowerOff', [DBusBoolean(interactive)],
         replySignature: DBusSignature(''));
   }
 
   /// Reboot the system.
   Future<void> reboot(bool interactive) {
-    return _object.callMethod(busName, 'Reboot', [DBusBoolean(interactive)],
+    return _object.callMethod(managerName, 'Reboot', [DBusBoolean(interactive)],
         replySignature: DBusSignature(''));
   }
 
   /// Suspend the system.
   Future<void> suspend(bool interactive) {
-    return _object.callMethod(busName, 'Suspend', [DBusBoolean(interactive)],
+    return _object.callMethod(
+        managerName, 'Suspend', [DBusBoolean(interactive)],
         replySignature: DBusSignature(''));
   }
 
   Future<String> canHalt() {
     return _object
-        .callMethod(busName, 'CanHalt', [], replySignature: DBusSignature('s'))
+        .callMethod(managerName, 'CanHalt', [],
+            replySignature: DBusSignature('s'))
         .then((response) => response.values.first.asString());
   }
 
   Future<String> canHibernate() {
     return _object
-        .callMethod(busName, 'CanHibernate', [],
+        .callMethod(managerName, 'CanHibernate', [],
             replySignature: DBusSignature('s'))
         .then((response) => response.values.first.asString());
   }
 
   Future<String> canPowerOff() {
     return _object
-        .callMethod(busName, 'CanPowerOff', [],
+        .callMethod(managerName, 'CanPowerOff', [],
             replySignature: DBusSignature('s'))
         .then((response) => response.values.first.asString());
   }
 
   Future<String> canSuspend() {
     return _object
-        .callMethod(busName, 'CanSuspend', [],
+        .callMethod(managerName, 'CanSuspend', [],
             replySignature: DBusSignature('s'))
         .then((response) => response.values.first.asString());
   }
 
   Future<String> canReboot() {
     return _object
-        .callMethod(busName, 'CanReboot', [],
+        .callMethod(managerName, 'CanReboot', [],
             replySignature: DBusSignature('s'))
         .then((response) => response.values.first.asString());
   }
@@ -103,11 +108,11 @@ class SystemdSessionManager {
       return;
     }
     _propertySubscription ??= _object.propertiesChanged.listen((signal) {
-      if (signal.propertiesInterface == busName) {
+      if (signal.propertiesInterface == managerName) {
         _updateProperties(signal.changedProperties);
       }
     });
-    return _object.getAllProperties(busName).then(_updateProperties);
+    return _object.getAllProperties(managerName).then(_updateProperties);
   }
 
   /// Closes connection to the Session Manager service.

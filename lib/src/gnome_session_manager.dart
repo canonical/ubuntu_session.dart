@@ -34,6 +34,7 @@ class GnomeSessionManager {
   }
 
   static final String busName = 'org.gnome.SessionManager';
+  static final String managerName = busName;
   static final String objectPath = '/org/gnome/SessionManager';
 
   final DBusClient? _bus;
@@ -55,26 +56,26 @@ class GnomeSessionManager {
     for (final flag in mode) {
       logoutMode |= flag.index;
     }
-    return _object.callMethod(busName, 'Logout', [DBusUint32(logoutMode)],
+    return _object.callMethod(managerName, 'Logout', [DBusUint32(logoutMode)],
         replySignature: DBusSignature(''));
   }
 
   /// Request a reboot dialog.
   Future<void> reboot() {
-    return _object.callMethod(busName, 'Reboot', [],
+    return _object.callMethod(managerName, 'Reboot', [],
         replySignature: DBusSignature(''));
   }
 
   /// Request a shutdown dialog.
   Future<void> shutdown() {
-    return _object.callMethod(busName, 'Shutdown', [],
+    return _object.callMethod(managerName, 'Shutdown', [],
         replySignature: DBusSignature(''));
   }
 
   /// True if shutdown is available to the user, false otherwise
   Future<bool> canShutdown() async {
     return _object
-        .callMethod(busName, 'CanShutdown', [],
+        .callMethod(managerName, 'CanShutdown', [],
             replySignature: DBusSignature('b'))
         .then((response) => response.values.first.asBoolean());
   }
@@ -82,7 +83,7 @@ class GnomeSessionManager {
   /// True if the session has entered the Running phase, false otherwise
   Future<bool> isSessionRunning() async {
     return _object
-        .callMethod(busName, 'IsSessionRunning', [],
+        .callMethod(managerName, 'IsSessionRunning', [],
             replySignature: DBusSignature('b'))
         .then((response) => response.values.first.asBoolean());
   }
@@ -94,11 +95,11 @@ class GnomeSessionManager {
       return;
     }
     _propertySubscription ??= _object.propertiesChanged.listen((signal) {
-      if (signal.propertiesInterface == busName) {
+      if (signal.propertiesInterface == managerName) {
         _updateProperties(signal.changedProperties);
       }
     });
-    return _object.getAllProperties(busName).then(_updateProperties);
+    return _object.getAllProperties(managerName).then(_updateProperties);
   }
 
   /// Closes connection to the Session Manager service.

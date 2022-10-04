@@ -8,7 +8,7 @@ import 'gnome_session_manager_test.mocks.dart';
 
 @GenerateMocks([DBusClient, DBusRemoteObject])
 void main() {
-  final busName = GnomeSessionManager.busName;
+  final managerName = GnomeSessionManager.managerName;
 
   test('connect and disconnect', () async {
     final object = createMockRemoteObject();
@@ -16,7 +16,7 @@ void main() {
 
     final manager = GnomeSessionManager(object: object);
     await manager.connect();
-    verify(object.getAllProperties(busName)).called(1);
+    verify(object.getAllProperties(managerName)).called(1);
 
     await manager.close();
     verify(bus.close()).called(1);
@@ -43,7 +43,7 @@ void main() {
     await manager
         .logout(mode: {GnomeLogoutMode.force, GnomeLogoutMode.noConfirm});
     verify(object.callMethod(
-      busName,
+      managerName,
       'Logout',
       [
         DBusUint32(
@@ -57,7 +57,7 @@ void main() {
     final object = createMockRemoteObject();
     final manager = GnomeSessionManager(object: object);
     await manager.reboot();
-    verify(object.callMethod(busName, 'Reboot', [],
+    verify(object.callMethod(managerName, 'Reboot', [],
             replySignature: DBusSignature('')))
         .called(1);
   });
@@ -66,7 +66,7 @@ void main() {
     final object = createMockRemoteObject();
     final manager = GnomeSessionManager(object: object);
     await manager.shutdown();
-    verify(object.callMethod(busName, 'Shutdown', [],
+    verify(object.callMethod(managerName, 'Shutdown', [],
             replySignature: DBusSignature('')))
         .called(1);
   });
@@ -75,7 +75,7 @@ void main() {
     final object = createMockRemoteObject(canShutdown: true);
     final manager = GnomeSessionManager(object: object);
     final canShutdown = await manager.canShutdown();
-    verify(object.callMethod(busName, 'CanShutdown', [],
+    verify(object.callMethod(managerName, 'CanShutdown', [],
             replySignature: DBusSignature('b')))
         .called(1);
     expect(canShutdown, true);
@@ -85,7 +85,7 @@ void main() {
     final object = createMockRemoteObject(isSessionRunning: true);
     final manager = GnomeSessionManager(object: object);
     final isSessionRunning = await manager.isSessionRunning();
-    verify(object.callMethod(busName, 'IsSessionRunning', [],
+    verify(object.callMethod(managerName, 'IsSessionRunning', [],
             replySignature: DBusSignature('b')))
         .called(1);
     expect(isSessionRunning, true);
@@ -100,26 +100,26 @@ MockDBusRemoteObject createMockRemoteObject({
 }) {
   final dbus = MockDBusClient();
   final object = MockDBusRemoteObject();
-  final busName = GnomeSessionManager.busName;
+  final managerName = GnomeSessionManager.managerName;
   when(object.client).thenReturn(dbus);
   when(object.propertiesChanged)
       .thenAnswer((_) => propertiesChanged ?? const Stream.empty());
-  when(object.getAllProperties(busName))
+  when(object.getAllProperties(managerName))
       .thenAnswer((_) async => properties ?? {});
-  when(object.callMethod(busName, 'Logout', any,
+  when(object.callMethod(managerName, 'Logout', any,
           replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
-  when(object.callMethod(busName, 'Reboot', [],
+  when(object.callMethod(managerName, 'Reboot', [],
           replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
-  when(object.callMethod(busName, 'Shutdown', [],
+  when(object.callMethod(managerName, 'Shutdown', [],
           replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
-  when(object.callMethod(busName, 'CanShutdown', [],
+  when(object.callMethod(managerName, 'CanShutdown', [],
           replySignature: DBusSignature('b')))
       .thenAnswer(
           (_) async => DBusMethodSuccessResponse([DBusBoolean(canShutdown)]));
-  when(object.callMethod(busName, 'IsSessionRunning', [],
+  when(object.callMethod(managerName, 'IsSessionRunning', [],
           replySignature: DBusSignature('b')))
       .thenAnswer((_) async =>
           DBusMethodSuccessResponse([DBusBoolean(isSessionRunning)]));

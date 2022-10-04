@@ -8,7 +8,7 @@ import 'systemd_session_manager_test.mocks.dart';
 
 @GenerateMocks([DBusClient, DBusRemoteObject])
 void main() {
-  final busName = SystemdSessionManager.busName;
+  final managerName = SystemdSessionManager.managerName;
 
   test('connect and disconnect', () async {
     final object = createMockRemoteObject();
@@ -16,7 +16,7 @@ void main() {
 
     final manager = SystemdSessionManager(object: object);
     await manager.connect();
-    verify(object.getAllProperties(busName)).called(1);
+    verify(object.getAllProperties(managerName)).called(1);
 
     await manager.close();
     verify(bus.close()).called(1);
@@ -38,7 +38,7 @@ void main() {
     final object = createMockRemoteObject();
     final manager = SystemdSessionManager(object: object);
     await manager.halt(true);
-    verify(object.callMethod(busName, 'Halt', [const DBusBoolean(true)],
+    verify(object.callMethod(managerName, 'Halt', [const DBusBoolean(true)],
             replySignature: DBusSignature('')))
         .called(1);
   });
@@ -47,7 +47,8 @@ void main() {
     final object = createMockRemoteObject();
     final manager = SystemdSessionManager(object: object);
     await manager.hibernate(true);
-    verify(object.callMethod(busName, 'Hibernate', [const DBusBoolean(true)],
+    verify(object.callMethod(
+            managerName, 'Hibernate', [const DBusBoolean(true)],
             replySignature: DBusSignature('')))
         .called(1);
   });
@@ -56,7 +57,7 @@ void main() {
     final object = createMockRemoteObject();
     final manager = SystemdSessionManager(object: object);
     await manager.powerOff(true);
-    verify(object.callMethod(busName, 'PowerOff', [const DBusBoolean(true)],
+    verify(object.callMethod(managerName, 'PowerOff', [const DBusBoolean(true)],
             replySignature: DBusSignature('')))
         .called(1);
   });
@@ -65,7 +66,7 @@ void main() {
     final object = createMockRemoteObject();
     final manager = SystemdSessionManager(object: object);
     await manager.reboot(true);
-    verify(object.callMethod(busName, 'Reboot', [const DBusBoolean(true)],
+    verify(object.callMethod(managerName, 'Reboot', [const DBusBoolean(true)],
             replySignature: DBusSignature('')))
         .called(1);
   });
@@ -74,7 +75,7 @@ void main() {
     final object = createMockRemoteObject();
     final manager = SystemdSessionManager(object: object);
     await manager.suspend(true);
-    verify(object.callMethod(busName, 'Suspend', [const DBusBoolean(true)],
+    verify(object.callMethod(managerName, 'Suspend', [const DBusBoolean(true)],
             replySignature: DBusSignature('')))
         .called(1);
   });
@@ -83,7 +84,7 @@ void main() {
     final object = createMockRemoteObject(canHalt: 'no');
     final manager = SystemdSessionManager(object: object);
     final canReboot = await manager.canHalt();
-    verify(object.callMethod(busName, 'CanHalt', [],
+    verify(object.callMethod(managerName, 'CanHalt', [],
             replySignature: DBusSignature('s')))
         .called(1);
     expect(canReboot, 'no');
@@ -93,7 +94,7 @@ void main() {
     final object = createMockRemoteObject(canHibernate: 'no');
     final manager = SystemdSessionManager(object: object);
     final canReboot = await manager.canHibernate();
-    verify(object.callMethod(busName, 'CanHibernate', [],
+    verify(object.callMethod(managerName, 'CanHibernate', [],
             replySignature: DBusSignature('s')))
         .called(1);
     expect(canReboot, 'no');
@@ -103,7 +104,7 @@ void main() {
     final object = createMockRemoteObject(canPowerOff: 'no');
     final manager = SystemdSessionManager(object: object);
     final canReboot = await manager.canPowerOff();
-    verify(object.callMethod(busName, 'CanPowerOff', [],
+    verify(object.callMethod(managerName, 'CanPowerOff', [],
             replySignature: DBusSignature('s')))
         .called(1);
     expect(canReboot, 'no');
@@ -113,7 +114,7 @@ void main() {
     final object = createMockRemoteObject(canReboot: 'no');
     final manager = SystemdSessionManager(object: object);
     final canReboot = await manager.canReboot();
-    verify(object.callMethod(busName, 'CanReboot', [],
+    verify(object.callMethod(managerName, 'CanReboot', [],
             replySignature: DBusSignature('s')))
         .called(1);
     expect(canReboot, 'no');
@@ -123,7 +124,7 @@ void main() {
     final object = createMockRemoteObject(canSuspend: 'no');
     final manager = SystemdSessionManager(object: object);
     final canReboot = await manager.canSuspend();
-    verify(object.callMethod(busName, 'CanSuspend', [],
+    verify(object.callMethod(managerName, 'CanSuspend', [],
             replySignature: DBusSignature('s')))
         .called(1);
     expect(canReboot, 'no');
@@ -141,44 +142,44 @@ MockDBusRemoteObject createMockRemoteObject({
 }) {
   final dbus = MockDBusClient();
   final object = MockDBusRemoteObject();
-  final busName = SystemdSessionManager.busName;
+  final managerName = SystemdSessionManager.managerName;
   when(object.client).thenReturn(dbus);
   when(object.propertiesChanged)
       .thenAnswer((_) => propertiesChanged ?? const Stream.empty());
-  when(object.getAllProperties(busName))
+  when(object.getAllProperties(managerName))
       .thenAnswer((_) async => properties ?? {});
-  when(object.callMethod(busName, 'Halt', any,
+  when(object.callMethod(managerName, 'Halt', any,
           replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
-  when(object.callMethod(busName, 'Hibernate', any,
+  when(object.callMethod(managerName, 'Hibernate', any,
           replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
-  when(object.callMethod(busName, 'PowerOff', any,
+  when(object.callMethod(managerName, 'PowerOff', any,
           replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
-  when(object.callMethod(busName, 'Reboot', any,
+  when(object.callMethod(managerName, 'Reboot', any,
           replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
-  when(object.callMethod(busName, 'Suspend', any,
+  when(object.callMethod(managerName, 'Suspend', any,
           replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
-  when(object.callMethod(busName, 'CanHalt', [],
+  when(object.callMethod(managerName, 'CanHalt', [],
           replySignature: DBusSignature('s')))
       .thenAnswer(
           (_) async => DBusMethodSuccessResponse([DBusString(canHalt)]));
-  when(object.callMethod(busName, 'CanHibernate', [],
+  when(object.callMethod(managerName, 'CanHibernate', [],
           replySignature: DBusSignature('s')))
       .thenAnswer(
           (_) async => DBusMethodSuccessResponse([DBusString(canHibernate)]));
-  when(object.callMethod(busName, 'CanReboot', [],
+  when(object.callMethod(managerName, 'CanReboot', [],
           replySignature: DBusSignature('s')))
       .thenAnswer(
           (_) async => DBusMethodSuccessResponse([DBusString(canReboot)]));
-  when(object.callMethod(busName, 'CanPowerOff', [],
+  when(object.callMethod(managerName, 'CanPowerOff', [],
           replySignature: DBusSignature('s')))
       .thenAnswer(
           (_) async => DBusMethodSuccessResponse([DBusString(canPowerOff)]));
-  when(object.callMethod(busName, 'CanSuspend', [],
+  when(object.callMethod(managerName, 'CanSuspend', [],
           replySignature: DBusSignature('s')))
       .thenAnswer(
           (_) async => DBusMethodSuccessResponse([DBusString(canSuspend)]));
