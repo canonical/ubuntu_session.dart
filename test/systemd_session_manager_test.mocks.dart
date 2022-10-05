@@ -5,13 +5,14 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
 
+import 'package:dbus/dbus.dart' as _i8;
 import 'package:dbus/src/dbus_client.dart' as _i2;
 import 'package:dbus/src/dbus_introspect.dart' as _i5;
 import 'package:dbus/src/dbus_method_response.dart' as _i3;
 import 'package:dbus/src/dbus_object.dart' as _i7;
-import 'package:dbus/src/dbus_remote_object.dart' as _i8;
 import 'package:dbus/src/dbus_value.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:ubuntu_session/src/systemd_session_manager.dart' as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -526,4 +527,128 @@ class MockDBusRemoteObject extends _i1.Mock implements _i8.DBusRemoteObject {
           ),
         )),
       ) as _i6.Future<_i3.DBusMethodSuccessResponse>);
+}
+
+/// A class which mocks [SystemdSessionManager].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSystemdSessionManager extends _i1.Mock
+    implements _i9.SystemdSessionManager {
+  MockSystemdSessionManager() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  bool get onExternalPower => (super.noSuchMethod(
+        Invocation.getter(#onExternalPower),
+        returnValue: false,
+      ) as bool);
+  @override
+  _i6.Stream<List<String>> get propertiesChanged => (super.noSuchMethod(
+        Invocation.getter(#propertiesChanged),
+        returnValue: _i6.Stream<List<String>>.empty(),
+      ) as _i6.Stream<List<String>>);
+  @override
+  _i6.Future<void> halt(bool? interactive) => (super.noSuchMethod(
+        Invocation.method(
+          #halt,
+          [interactive],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+  @override
+  _i6.Future<void> hibernate(bool? interactive) => (super.noSuchMethod(
+        Invocation.method(
+          #hibernate,
+          [interactive],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+  @override
+  _i6.Future<void> powerOff(bool? interactive) => (super.noSuchMethod(
+        Invocation.method(
+          #powerOff,
+          [interactive],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+  @override
+  _i6.Future<void> reboot(bool? interactive) => (super.noSuchMethod(
+        Invocation.method(
+          #reboot,
+          [interactive],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+  @override
+  _i6.Future<void> suspend(bool? interactive) => (super.noSuchMethod(
+        Invocation.method(
+          #suspend,
+          [interactive],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+  @override
+  _i6.Future<String> canHalt() => (super.noSuchMethod(
+        Invocation.method(
+          #canHalt,
+          [],
+        ),
+        returnValue: _i6.Future<String>.value(''),
+      ) as _i6.Future<String>);
+  @override
+  _i6.Future<String> canHibernate() => (super.noSuchMethod(
+        Invocation.method(
+          #canHibernate,
+          [],
+        ),
+        returnValue: _i6.Future<String>.value(''),
+      ) as _i6.Future<String>);
+  @override
+  _i6.Future<String> canPowerOff() => (super.noSuchMethod(
+        Invocation.method(
+          #canPowerOff,
+          [],
+        ),
+        returnValue: _i6.Future<String>.value(''),
+      ) as _i6.Future<String>);
+  @override
+  _i6.Future<String> canSuspend() => (super.noSuchMethod(
+        Invocation.method(
+          #canSuspend,
+          [],
+        ),
+        returnValue: _i6.Future<String>.value(''),
+      ) as _i6.Future<String>);
+  @override
+  _i6.Future<String> canReboot() => (super.noSuchMethod(
+        Invocation.method(
+          #canReboot,
+          [],
+        ),
+        returnValue: _i6.Future<String>.value(''),
+      ) as _i6.Future<String>);
+  @override
+  _i6.Future<void> connect() => (super.noSuchMethod(
+        Invocation.method(
+          #connect,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+  @override
+  _i6.Future<void> close() => (super.noSuchMethod(
+        Invocation.method(
+          #close,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 }

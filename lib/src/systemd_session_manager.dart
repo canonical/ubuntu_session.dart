@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dbus/dbus.dart';
 import 'package:meta/meta.dart';
 
+import 'simple_session_manager.dart';
 import 'util.dart';
 
 /// The client that connects to the SystemD Session Manager
@@ -134,5 +135,32 @@ class SystemdSessionManager {
   void _updateProperties(Map<String, DBusValue> properties) {
     _properties.addAll(properties);
     _propertyController.add(properties.keys.toList());
+  }
+}
+
+class SystemdSimpleSessionManager implements SimpleSessionManager {
+  SystemdSimpleSessionManager({SystemdSessionManager? manager})
+      : _manager = manager ?? SystemdSessionManager();
+
+  final SystemdSessionManager _manager;
+
+  @override
+  Future<void> logout() {
+    // TODO: implement logout
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> reboot() async {
+    await _manager.connect();
+    await _manager.reboot(true);
+    await _manager.close();
+  }
+
+  @override
+  Future<void> shutdown() async {
+    await _manager.connect();
+    await _manager.powerOff(true);
+    await _manager.close();
   }
 }

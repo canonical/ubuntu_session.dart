@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dbus/dbus.dart';
 import 'package:meta/meta.dart';
 
+import 'simple_session_manager.dart';
 import 'util.dart';
 
 enum GnomeLogoutMode {
@@ -121,5 +122,33 @@ class GnomeSessionManager {
   void _updateProperties(Map<String, DBusValue> properties) {
     _properties.addAll(properties);
     _propertyController.add(properties.keys.toList());
+  }
+}
+
+class GnomeSimpleSessionManager implements SimpleSessionManager {
+  GnomeSimpleSessionManager({GnomeSessionManager? manager})
+      : _manager = manager ?? GnomeSessionManager();
+
+  final GnomeSessionManager _manager;
+
+  @override
+  Future<void> logout() async {
+    await _manager.connect();
+    await _manager.logout();
+    await _manager.close();
+  }
+
+  @override
+  Future<void> reboot() async {
+    await _manager.connect();
+    await _manager.reboot();
+    await _manager.close();
+  }
+
+  @override
+  Future<void> shutdown() async {
+    await _manager.connect();
+    await _manager.shutdown();
+    await _manager.close();
   }
 }

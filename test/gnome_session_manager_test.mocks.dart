@@ -5,13 +5,14 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
 
+import 'package:dbus/dbus.dart' as _i8;
 import 'package:dbus/src/dbus_client.dart' as _i2;
 import 'package:dbus/src/dbus_introspect.dart' as _i5;
 import 'package:dbus/src/dbus_method_response.dart' as _i3;
 import 'package:dbus/src/dbus_object.dart' as _i7;
-import 'package:dbus/src/dbus_remote_object.dart' as _i8;
 import 'package:dbus/src/dbus_value.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:ubuntu_session/src/gnome_session_manager.dart' as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -526,4 +527,93 @@ class MockDBusRemoteObject extends _i1.Mock implements _i8.DBusRemoteObject {
           ),
         )),
       ) as _i6.Future<_i3.DBusMethodSuccessResponse>);
+}
+
+/// A class which mocks [GnomeSessionManager].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGnomeSessionManager extends _i1.Mock
+    implements _i9.GnomeSessionManager {
+  MockGnomeSessionManager() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  bool get sessionIsActive => (super.noSuchMethod(
+        Invocation.getter(#sessionIsActive),
+        returnValue: false,
+      ) as bool);
+  @override
+  String get sessionName => (super.noSuchMethod(
+        Invocation.getter(#sessionName),
+        returnValue: '',
+      ) as String);
+  @override
+  _i6.Stream<List<String>> get propertiesChanged => (super.noSuchMethod(
+        Invocation.getter(#propertiesChanged),
+        returnValue: _i6.Stream<List<String>>.empty(),
+      ) as _i6.Stream<List<String>>);
+  @override
+  _i6.Future<void> logout({Set<_i9.GnomeLogoutMode>? mode = const {}}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #logout,
+          [],
+          {#mode: mode},
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+  @override
+  _i6.Future<void> reboot() => (super.noSuchMethod(
+        Invocation.method(
+          #reboot,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+  @override
+  _i6.Future<void> shutdown() => (super.noSuchMethod(
+        Invocation.method(
+          #shutdown,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+  @override
+  _i6.Future<bool> canShutdown() => (super.noSuchMethod(
+        Invocation.method(
+          #canShutdown,
+          [],
+        ),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
+  @override
+  _i6.Future<bool> isSessionRunning() => (super.noSuchMethod(
+        Invocation.method(
+          #isSessionRunning,
+          [],
+        ),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
+  @override
+  _i6.Future<void> connect() => (super.noSuchMethod(
+        Invocation.method(
+          #connect,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+  @override
+  _i6.Future<void> close() => (super.noSuchMethod(
+        Invocation.method(
+          #close,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
 }
