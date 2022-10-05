@@ -47,6 +47,31 @@ class SystemdSessionManager {
         replySignature: DBusSignature(''));
   }
 
+  Future<Iterable<SystemdSession>> listSessions() async {
+    final response = await _object
+        .callMethod(managerName, 'ListSessions', [],
+            replySignature: DBusSignature.array(
+              DBusSignature.struct([
+                DBusSignature('s'),
+                DBusSignature('u'),
+                DBusSignature('s'),
+                DBusSignature('s'),
+                DBusSignature('o'),
+              ]),
+            ))
+        .then((response) => response.values.first.asArray());
+    final sessions = response.map(
+      (e) => SystemdSession(
+        DBusRemoteObject(
+          _object.client,
+          name: busName,
+          path: e.asStruct()[4].asObjectPath(),
+        ),
+      ),
+    );
+    return sessions;
+  }
+
   /// Power off the system.
   Future<void> powerOff(bool interactive) {
     return _object.callMethod(
@@ -163,4 +188,20 @@ class SystemdSimpleSessionManager implements SimpleSessionManager {
     await _manager.powerOff(true);
     await _manager.close();
   }
+}
+
+class SystemdSession {
+  SystemdSession(this._object);
+  final DBusRemoteObject _object;
+
+  static final String clientName = 'org.freedesktop.login1.Session';
+
+  Future<String> get id async =>
+      (await _object.getProperty(clientName, 'Id')).asString();
+  Future<bool> get active async =>
+      (await _object.getProperty(clientName, 'Active')).asBoolean();
+  Future<void> lock() => _object.callMethod(clientName, 'Lock', [],
+      replySignature: DBusSignature(''));
+  Future<void> terminate() => _object.callMethod(clientName, 'Terminate', [],
+      replySignature: DBusSignature(''));
 }
