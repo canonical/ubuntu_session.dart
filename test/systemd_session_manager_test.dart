@@ -6,7 +6,12 @@ import 'package:ubuntu_session/ubuntu_session.dart';
 
 import 'systemd_session_manager_test.mocks.dart';
 
-@GenerateMocks([DBusClient, DBusRemoteObject, SystemdSessionManager])
+@GenerateMocks([
+  DBusClient,
+  DBusRemoteObject,
+  SystemdSessionManager,
+  SystemdSession,
+])
 void main() {
   group('DBus API', () {
     final managerName = SystemdSessionManager.managerName;
@@ -134,6 +139,21 @@ void main() {
     });
   });
   group('simple API', () {
+    test('logout', () async {
+      final dbusManager = MockSystemdSessionManager();
+      final session = MockSystemdSession();
+      when(session.active).thenAnswer((_) => Future.value(true));
+      when(dbusManager.listSessions())
+          .thenAnswer((_) => Future.value([session]));
+      final simpleManager = SystemdSimpleSessionManager(manager: dbusManager);
+      await simpleManager.logout();
+      verifyInOrder([
+        dbusManager.connect(),
+        dbusManager.listSessions(),
+        session.terminate(),
+        dbusManager.close(),
+      ]);
+    });
     test('reboot', () async {
       final dbusManager = MockSystemdSessionManager();
       final simpleManager = SystemdSimpleSessionManager(manager: dbusManager);

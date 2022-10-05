@@ -170,9 +170,14 @@ class SystemdSimpleSessionManager implements SimpleSessionManager {
   final SystemdSessionManager _manager;
 
   @override
-  Future<void> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
+  Future<void> logout() async {
+    await _manager.connect();
+    await _manager.listSessions();
+    final sessions = await _manager.listSessions();
+    for (final session in sessions) {
+      if (await session.active) await session.terminate();
+    }
+    await _manager.close();
   }
 
   @override

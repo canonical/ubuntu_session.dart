@@ -567,6 +567,16 @@ class MockSystemdSessionManager extends _i1.Mock
         returnValueForMissingStub: _i6.Future<void>.value(),
       ) as _i6.Future<void>);
   @override
+  _i6.Future<Iterable<_i9.SystemdSession>> listSessions() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #listSessions,
+          [],
+        ),
+        returnValue: _i6.Future<Iterable<_i9.SystemdSession>>.value(
+            <_i9.SystemdSession>[]),
+      ) as _i6.Future<Iterable<_i9.SystemdSession>>);
+  @override
   _i6.Future<void> powerOff(bool? interactive) => (super.noSuchMethod(
         Invocation.method(
           #powerOff,
@@ -646,6 +656,44 @@ class MockSystemdSessionManager extends _i1.Mock
   _i6.Future<void> close() => (super.noSuchMethod(
         Invocation.method(
           #close,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+}
+
+/// A class which mocks [SystemdSession].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSystemdSession extends _i1.Mock implements _i9.SystemdSession {
+  MockSystemdSession() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<String> get id => (super.noSuchMethod(
+        Invocation.getter(#id),
+        returnValue: _i6.Future<String>.value(''),
+      ) as _i6.Future<String>);
+  @override
+  _i6.Future<bool> get active => (super.noSuchMethod(
+        Invocation.getter(#active),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
+  @override
+  _i6.Future<void> lock() => (super.noSuchMethod(
+        Invocation.method(
+          #lock,
+          [],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+  @override
+  _i6.Future<void> terminate() => (super.noSuchMethod(
+        Invocation.method(
+          #terminate,
           [],
         ),
         returnValue: _i6.Future<void>.value(),
