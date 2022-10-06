@@ -199,14 +199,19 @@ class SystemdSession {
   SystemdSession(this._object);
   final DBusRemoteObject _object;
 
-  static final String clientName = 'org.freedesktop.login1.Session';
+  static final String sessionName = 'org.freedesktop.login1.Session';
 
   Future<String> get id async =>
-      (await _object.getProperty(clientName, 'Id')).asString();
+      (await _object.getProperty(sessionName, 'Id')).asString();
   Future<bool> get active async =>
-      (await _object.getProperty(clientName, 'Active')).asBoolean();
-  Future<void> lock() => _object.callMethod(clientName, 'Lock', [],
+      (await _object.getProperty(sessionName, 'Active')).asBoolean();
+  Future<void> lock() => _object.callMethod(sessionName, 'Lock', [],
       replySignature: DBusSignature(''));
-  Future<void> terminate() => _object.callMethod(clientName, 'Terminate', [],
+  Future<void> terminate() => _object.callMethod(sessionName, 'Terminate', [],
       replySignature: DBusSignature(''));
+
+  @override
+  String toString() {
+    return 'SystemdClient(${_object.path.value}';
+  }
 }

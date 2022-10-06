@@ -43,99 +43,151 @@ void main() {
     test('Halt', () async {
       final object = createMockRemoteObject();
       final manager = SystemdSessionManager(object: object);
+      await manager.connect();
       await manager.halt(true);
       verify(object.callMethod(managerName, 'Halt', [const DBusBoolean(true)],
               replySignature: DBusSignature('')))
           .called(1);
+      await manager.close();
     });
 
     test('Hibernate', () async {
       final object = createMockRemoteObject();
       final manager = SystemdSessionManager(object: object);
+      await manager.connect();
       await manager.hibernate(true);
       verify(object.callMethod(
               managerName, 'Hibernate', [const DBusBoolean(true)],
               replySignature: DBusSignature('')))
           .called(1);
+      await manager.close();
+    });
+
+    test('ListSessions', () async {
+      final sessionId = '13';
+      final userId = 1000;
+      final userName = 'testname';
+      final seatId = 'seat0';
+      final sessionObjectpath = '/org/freedesktop/login1/session/_1337';
+      final object = createMockRemoteObject(sessions: [
+        DBusStruct([
+          DBusString(sessionId),
+          DBusUint32(userId),
+          DBusString(userName),
+          DBusString(seatId),
+          DBusObjectPath(sessionObjectpath),
+        ])
+      ]);
+      final manager = SystemdSessionManager(object: object);
+      await manager.connect();
+      final sessions = await manager.listSessions();
+      verify(object.callMethod(managerName, 'ListSessions', [],
+          replySignature: DBusSignature.array(
+            DBusSignature.struct([
+              DBusSignature('s'),
+              DBusSignature('u'),
+              DBusSignature('s'),
+              DBusSignature('s'),
+              DBusSignature('o'),
+            ]),
+          ))).called(1);
+      expect(sessions.length, 1);
+      expect(sessions.first.toString(), 'SystemdClient($sessionObjectpath');
     });
 
     test('PowerOff', () async {
       final object = createMockRemoteObject();
       final manager = SystemdSessionManager(object: object);
+      await manager.connect();
       await manager.powerOff(true);
       verify(object.callMethod(
               managerName, 'PowerOff', [const DBusBoolean(true)],
               replySignature: DBusSignature('')))
           .called(1);
+      await manager.close();
     });
 
     test('Reboot', () async {
       final object = createMockRemoteObject();
       final manager = SystemdSessionManager(object: object);
+      await manager.connect();
       await manager.reboot(true);
       verify(object.callMethod(managerName, 'Reboot', [const DBusBoolean(true)],
               replySignature: DBusSignature('')))
           .called(1);
+      await manager.close();
     });
 
     test('Suspend', () async {
       final object = createMockRemoteObject();
       final manager = SystemdSessionManager(object: object);
+      await manager.connect();
       await manager.suspend(true);
       verify(object.callMethod(
               managerName, 'Suspend', [const DBusBoolean(true)],
               replySignature: DBusSignature('')))
           .called(1);
+      await manager.close();
     });
 
     test('CanHalt', () async {
       final object = createMockRemoteObject(canHalt: 'no');
       final manager = SystemdSessionManager(object: object);
+      await manager.connect();
       final canReboot = await manager.canHalt();
       verify(object.callMethod(managerName, 'CanHalt', [],
               replySignature: DBusSignature('s')))
           .called(1);
       expect(canReboot, 'no');
+      await manager.close();
     });
 
     test('CanHibernate', () async {
       final object = createMockRemoteObject(canHibernate: 'no');
       final manager = SystemdSessionManager(object: object);
+      await manager.connect();
       final canReboot = await manager.canHibernate();
       verify(object.callMethod(managerName, 'CanHibernate', [],
               replySignature: DBusSignature('s')))
           .called(1);
       expect(canReboot, 'no');
+      await manager.close();
     });
 
     test('CanPowerOff', () async {
       final object = createMockRemoteObject(canPowerOff: 'no');
       final manager = SystemdSessionManager(object: object);
+      await manager.connect();
       final canReboot = await manager.canPowerOff();
       verify(object.callMethod(managerName, 'CanPowerOff', [],
               replySignature: DBusSignature('s')))
           .called(1);
       expect(canReboot, 'no');
+      await manager.close();
     });
 
     test('CanReboot', () async {
       final object = createMockRemoteObject(canReboot: 'no');
       final manager = SystemdSessionManager(object: object);
+      await manager.connect();
       final canReboot = await manager.canReboot();
       verify(object.callMethod(managerName, 'CanReboot', [],
               replySignature: DBusSignature('s')))
           .called(1);
       expect(canReboot, 'no');
+      await manager.close();
     });
 
     test('CanSuspend', () async {
       final object = createMockRemoteObject(canSuspend: 'no');
       final manager = SystemdSessionManager(object: object);
+      await manager.connect();
       final canReboot = await manager.canSuspend();
       verify(object.callMethod(managerName, 'CanSuspend', [],
               replySignature: DBusSignature('s')))
           .called(1);
       expect(canReboot, 'no');
+      await manager.close();
     });
   });
   group('simple API', () {
@@ -185,6 +237,7 @@ MockDBusRemoteObject createMockRemoteObject({
   String canPowerOff = 'yes',
   String canReboot = 'yes',
   String canSuspend = 'yes',
+  List<DBusValue>? sessions,
 }) {
   final dbus = MockDBusClient();
   final object = MockDBusRemoteObject();
@@ -200,6 +253,18 @@ MockDBusRemoteObject createMockRemoteObject({
   when(object.callMethod(managerName, 'Hibernate', any,
           replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
+
+  final sessionSignature = DBusSignature.struct([
+    DBusSignature('s'),
+    DBusSignature('u'),
+    DBusSignature('s'),
+    DBusSignature('s'),
+    DBusSignature('o')
+  ]);
+  when(object.callMethod(managerName, 'ListSessions', [],
+          replySignature: DBusSignature.array(sessionSignature)))
+      .thenAnswer((_) async => DBusMethodSuccessResponse(
+          [DBusArray(sessionSignature, sessions ?? [])]));
   when(object.callMethod(managerName, 'PowerOff', any,
           replySignature: DBusSignature('')))
       .thenAnswer((_) async => DBusMethodSuccessResponse());
