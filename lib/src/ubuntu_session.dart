@@ -63,8 +63,15 @@ class UbuntuSession {
     }
   }
 
+  /// The current desktop environment.
   UbuntuDesktop get desktop => _getDesktop(_env);
+
+  /// Log out of the active session.
   Future<void> logout() => _manager.logout();
+
+  /// Reboot the system.
   Future<void> reboot() => _manager.reboot();
+
+  /// Shutdown the system.
   Future<void> shutdown() => _manager.shutdown();
 }
