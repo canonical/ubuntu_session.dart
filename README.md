@@ -88,6 +88,8 @@ void main() async {
 Please refer to the [GNOME Session documentation](https://lira.no-ip.org:8443/doc/gnome-session/dbus/gnome-session.html) for further details.
 Note that the MATE session manager only implements a [subset](https://github.com/mate-desktop/mate-session-manager/blob/master/mate-session/org.gnome.SessionManager.xml) of the `org.gnome.SessionManager` interface
 
+Since `Reboot` is not provided by the MATE session manager, `UbuntuSession().reboot()` invokes the `Shutdown` method in the MATE desktop environment, as it shows a dialog that provides options to suspend, reboot and shutdown the system.
+
 ## systemd-logind
 
 ```dart

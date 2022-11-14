@@ -7,3 +7,6 @@
 - `SessionManager` -> `GnomeSessionManager`
 - add `SystemdSessionManager`
 - introduce `UbuntuSession` with a simplified API
+
+## 0.0.3
+- add `MateSessionManager`
