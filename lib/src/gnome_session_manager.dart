@@ -44,6 +44,9 @@ class GnomeSessionManager {
   final _propertyController = StreamController<List<String>>.broadcast();
   StreamSubscription? _propertySubscription;
 
+  /// The name of the renderer.
+  String get renderer => _getProperty('Renderer', '');
+
   /// If true, the session is currently in the foreground and available for user
   /// input.
   bool get sessionIsActive => _getProperty('SessionIsActive', false);

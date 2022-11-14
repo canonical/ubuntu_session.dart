@@ -25,14 +25,17 @@ void main() {
 
     test('read properties', () async {
       final object = createMockRemoteObject(properties: {
+        'Renderer': const DBusString('test renderer'),
         'SessionIsActive': const DBusBoolean(true),
         'SessionName': const DBusString('ubuntu'),
       });
 
       final manager = GnomeSessionManager(object: object);
       await manager.connect();
+      final renderer = manager.renderer;
       final sessionName = manager.sessionName;
       final sessionIsActive = manager.sessionIsActive;
+      expect(renderer, 'test renderer');
       expect(sessionName, 'ubuntu');
       expect(sessionIsActive, true);
       await manager.close();

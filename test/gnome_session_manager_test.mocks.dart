@@ -539,6 +539,11 @@ class MockGnomeSessionManager extends _i1.Mock
   }
 
   @override
+  String get renderer => (super.noSuchMethod(
+        Invocation.getter(#renderer),
+        returnValue: '',
+      ) as String);
+  @override
   bool get sessionIsActive => (super.noSuchMethod(
         Invocation.getter(#sessionIsActive),
         returnValue: false,
