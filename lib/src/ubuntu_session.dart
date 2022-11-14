@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:meta/meta.dart';
 
 import 'gnome_session_manager.dart';
+import 'mate_session_manager.dart';
 import 'simple_session_manager.dart';
 import 'systemd_session_manager.dart';
 
@@ -10,6 +11,7 @@ enum UbuntuDesktop {
   gnome,
   kde,
   lxde,
+  mate,
   unknown,
 }
 
@@ -44,6 +46,8 @@ class UbuntuSession {
     switch (_getDesktop(env)) {
       case UbuntuDesktop.gnome:
         return GnomeSimpleSessionManager();
+      case UbuntuDesktop.mate:
+        return MateSimpleSessionManager();
       default:
         if (fallback) return SystemdSimpleSessionManager();
     }
@@ -58,6 +62,8 @@ class UbuntuSession {
       return UbuntuDesktop.kde;
     } else if (xdgCurrentDesktop.contains('lxde')) {
       return UbuntuDesktop.lxde;
+    } else if (xdgCurrentDesktop.contains('mate')) {
+      return UbuntuDesktop.mate;
     } else {
       return UbuntuDesktop.unknown;
     }
