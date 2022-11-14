@@ -58,6 +58,36 @@ void main() async {
 
 Please refer to the [GNOME Session documentation](https://lira.no-ip.org:8443/doc/gnome-session/dbus/gnome-session.html) for further details.
 
+## MATE Session Manager
+```dart
+import 'package:dbus/dbus.dart';
+import 'package:ubuntu_session/ubuntu_session.dart';
+
+void main() async {
+  final manager = MateSessionManager();
+  await manager.connect();
+  try {
+    await manager.shutdown();
+  } on DBusMethodResponseException catch (e) {
+    print('Error: $e');
+  }
+  await manager.close();
+}
+```
+
+### Implemented so far:
+### `org.gnome.SessionManager`
+#### Methods
+- `Shutdown()`
+- `CanShutdown()`
+- `IsSessionRunning()`
+- `Logout()`
+#### Properties
+- `Renderer`
+
+Please refer to the [GNOME Session documentation](https://lira.no-ip.org:8443/doc/gnome-session/dbus/gnome-session.html) for further details.
+Note that the MATE session manager only implements a [subset](https://github.com/mate-desktop/mate-session-manager/blob/master/mate-session/org.gnome.SessionManager.xml) of the `org.gnome.SessionManager` interface
+
 ## systemd-logind
 
 ```dart
