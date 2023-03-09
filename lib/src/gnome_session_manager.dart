@@ -35,14 +35,6 @@ enum GnomeInhibitionFlag {
   autoMount,
 }
 
-int _encodeEnum(Set<Enum> flags) {
-  var value = 0;
-  for (final f in flags) {
-    value |= 1 << f.index;
-  }
-  return value;
-}
-
 /// The client that connects to the GNOME Session Manager
 class GnomeSessionManager {
   GnomeSessionManager({
@@ -124,7 +116,7 @@ class GnomeSessionManager {
               DBusString(appId),
               DBusUint32(topLevelXId),
               DBusString(reason),
-              DBusUint32(_encodeEnum(flags)),
+              DBusUint32(encodeEnum(flags)),
             ],
             replySignature: DBusSignature('u'))
         .then((response) => response.values.first.asUint32());
@@ -139,8 +131,7 @@ class GnomeSessionManager {
   /// True if any of the operations in [flags] are inhibited.
   Future<bool> isInhibited(Set<GnomeInhibitionFlag> flags) async {
     return _object
-        .callMethod(
-            managerName, 'IsInhibited', [DBusUint32(_encodeEnum(flags))],
+        .callMethod(managerName, 'IsInhibited', [DBusUint32(encodeEnum(flags))],
             replySignature: DBusSignature('b'))
         .then((response) => response.values.first.asBoolean());
   }
