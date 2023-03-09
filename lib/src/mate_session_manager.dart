@@ -18,6 +18,23 @@ enum MateLogoutMode {
   force,
 }
 
+enum MateInhibitionFlag {
+  /// Inhibit logging out
+  logout,
+
+  /// Inhbit user switching
+  switchUser,
+
+  /// Inhibit suspending the session or computer
+  suspend,
+
+  /// Inhibit the session being marked as idle
+  idle,
+
+  /// Inhibit auto-mounting removable media for the session
+  autoMount,
+}
+
 /// The client that connects to the MATE Session Manager
 class MateSessionManager {
   MateSessionManager({
@@ -87,6 +104,37 @@ class MateSessionManager {
       }
     });
     return _object.getAllProperties(managerName).then(_updateProperties);
+  }
+
+  /// Create an inhibition lock.
+  Future<int> inhibit(String appId, int topLevelXId, String reason,
+      Set<MateInhibitionFlag> flags) async {
+    return _object
+        .callMethod(
+            managerName,
+            'Inhibit',
+            [
+              DBusString(appId),
+              DBusUint32(topLevelXId),
+              DBusString(reason),
+              DBusUint32(encodeEnum(flags)),
+            ],
+            replySignature: DBusSignature('u'))
+        .then((response) => response.values.first.asUint32());
+  }
+
+  /// Cancel a previous call to `inhibit()` identified by the [cookie].
+  Future<void> uninhibit(int cookie) {
+    return _object.callMethod(managerName, 'Uninhibit', [DBusUint32(cookie)],
+        replySignature: DBusSignature(''));
+  }
+
+  /// True if any of the operations in [flags] are inhibited.
+  Future<bool> isInhibited(Set<MateInhibitionFlag> flags) async {
+    return _object
+        .callMethod(managerName, 'IsInhibited', [DBusUint32(encodeEnum(flags))],
+            replySignature: DBusSignature('b'))
+        .then((response) => response.values.first.asBoolean());
   }
 
   /// Closes connection to the Session Manager service.
