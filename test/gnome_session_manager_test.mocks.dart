@@ -605,6 +605,43 @@ class MockGnomeSessionManager extends _i1.Mock
         returnValue: _i6.Future<bool>.value(false),
       ) as _i6.Future<bool>);
   @override
+  _i6.Future<int> inhibit(
+    String? appId,
+    int? topLevelXId,
+    String? reason,
+    Set<_i9.GnomeInhibitionFlag>? flags,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #inhibit,
+          [
+            appId,
+            topLevelXId,
+            reason,
+            flags,
+          ],
+        ),
+        returnValue: _i6.Future<int>.value(0),
+      ) as _i6.Future<int>);
+  @override
+  _i6.Future<void> uninhibit(int? cookie) => (super.noSuchMethod(
+        Invocation.method(
+          #uninhibit,
+          [cookie],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+  @override
+  _i6.Future<bool> isInhibited(Set<_i9.GnomeInhibitionFlag>? flags) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #isInhibited,
+          [flags],
+        ),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
+  @override
   _i6.Future<void> connect() => (super.noSuchMethod(
         Invocation.method(
           #connect,
