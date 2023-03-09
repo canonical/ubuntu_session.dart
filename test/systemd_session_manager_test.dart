@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dbus/dbus.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -189,6 +191,34 @@ void main() {
       expect(canReboot, 'no');
       await manager.close();
     });
+
+    test('Inhibit', () async {
+      final object = createMockRemoteObject();
+      final manager = SystemdSessionManager(object: object);
+      await manager.connect();
+      final fd = await manager.inhibit(
+        what: {
+          SystemdInhibitionFlag.handlePowerKey,
+          SystemdInhibitionFlag.idle
+        },
+        who: 'who',
+        why: 'why',
+        mode: SystemdInhibitionMode.block,
+      );
+      expect(fd, isA<ResourceHandle>());
+      verify(object.callMethod(
+              managerName,
+              'Inhibit',
+              [
+                const DBusString('handle-power-key:idle'),
+                const DBusString('who'),
+                const DBusString('why'),
+                const DBusString('block'),
+              ],
+              replySignature: DBusSignature('h')))
+          .called(1);
+      await manager.close();
+    });
   });
   group('simple API', () {
     test('logout', () async {
@@ -294,5 +324,9 @@ MockDBusRemoteObject createMockRemoteObject({
           replySignature: DBusSignature('s')))
       .thenAnswer(
           (_) async => DBusMethodSuccessResponse([DBusString(canSuspend)]));
+  when(object.callMethod(managerName, 'Inhibit', any,
+          replySignature: DBusSignature('h')))
+      .thenAnswer((_) async => DBusMethodSuccessResponse(
+          [DBusUnixFd(ResourceHandle.fromStdin(stdin))]));
   return object;
 }

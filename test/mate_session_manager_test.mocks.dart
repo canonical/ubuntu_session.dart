@@ -595,6 +595,44 @@ class MockMateSessionManager extends _i1.Mock
         returnValueForMissingStub: _i6.Future<void>.value(),
       ) as _i6.Future<void>);
   @override
+  _i6.Future<int> inhibit({
+    required String? appId,
+    required int? topLevelXId,
+    required String? reason,
+    required Set<_i9.MateInhibitionFlag>? flags,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #inhibit,
+          [],
+          {
+            #appId: appId,
+            #topLevelXId: topLevelXId,
+            #reason: reason,
+            #flags: flags,
+          },
+        ),
+        returnValue: _i6.Future<int>.value(0),
+      ) as _i6.Future<int>);
+  @override
+  _i6.Future<void> uninhibit(int? cookie) => (super.noSuchMethod(
+        Invocation.method(
+          #uninhibit,
+          [cookie],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+  @override
+  _i6.Future<bool> isInhibited(Set<_i9.MateInhibitionFlag>? flags) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #isInhibited,
+          [flags],
+        ),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
+  @override
   _i6.Future<void> close() => (super.noSuchMethod(
         Invocation.method(
           #close,

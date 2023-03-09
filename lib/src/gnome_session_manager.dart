@@ -18,6 +18,23 @@ enum GnomeLogoutMode {
   force,
 }
 
+enum GnomeInhibitionFlag {
+  /// Inhibit logging out
+  logout,
+
+  /// Inhibit user switching
+  switchUser,
+
+  /// Inhibit suspending the session or computer
+  suspend,
+
+  /// Inhibit the session being marked as idle
+  idle,
+
+  /// Inhibit auto-mounting removable media for the session
+  autoMount,
+}
+
 /// The client that connects to the GNOME Session Manager
 class GnomeSessionManager {
   GnomeSessionManager({
@@ -84,6 +101,41 @@ class GnomeSessionManager {
   Future<bool> isSessionRunning() async {
     return _object
         .callMethod(managerName, 'IsSessionRunning', [],
+            replySignature: DBusSignature('b'))
+        .then((response) => response.values.first.asBoolean());
+  }
+
+  /// Create an inhibition lock.
+  Future<int> inhibit({
+    required String appId,
+    required int topLevelXId,
+    required String reason,
+    required Set<GnomeInhibitionFlag> flags,
+  }) async {
+    return _object
+        .callMethod(
+            managerName,
+            'Inhibit',
+            [
+              DBusString(appId),
+              DBusUint32(topLevelXId),
+              DBusString(reason),
+              DBusUint32(encodeEnum(flags)),
+            ],
+            replySignature: DBusSignature('u'))
+        .then((response) => response.values.first.asUint32());
+  }
+
+  /// Cancel a previous call to `inhibit()` identified by the [cookie].
+  Future<void> uninhibit(int cookie) {
+    return _object.callMethod(managerName, 'Uninhibit', [DBusUint32(cookie)],
+        replySignature: DBusSignature(''));
+  }
+
+  /// True if any of the operations in [flags] are inhibited.
+  Future<bool> isInhibited(Set<GnomeInhibitionFlag> flags) async {
+    return _object
+        .callMethod(managerName, 'IsInhibited', [DBusUint32(encodeEnum(flags))],
             replySignature: DBusSignature('b'))
         .then((response) => response.values.first.asBoolean());
   }

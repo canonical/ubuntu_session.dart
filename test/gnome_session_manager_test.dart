@@ -90,6 +90,51 @@ void main() {
           .called(1);
       expect(isSessionRunning, true);
     });
+
+    test('Inhibit', () async {
+      final object = createMockRemoteObject(inhibitionCookie: 1337);
+      final manager = GnomeSessionManager(object: object);
+      final cookie = await manager.inhibit(
+        appId: 'appId',
+        topLevelXId: 42,
+        reason: 'foo',
+        flags: {GnomeInhibitionFlag.logout, GnomeInhibitionFlag.switchUser},
+      );
+      verify(object.callMethod(
+              managerName,
+              'Inhibit',
+              [
+                const DBusString('appId'),
+                const DBusUint32(42),
+                const DBusString('foo'),
+                const DBusUint32(3),
+              ],
+              replySignature: DBusSignature('u')))
+          .called(1);
+      expect(cookie, 1337);
+    });
+
+    test('Uninhibit', () async {
+      final object = createMockRemoteObject();
+      final manager = GnomeSessionManager(object: object);
+      await manager.uninhibit(1337);
+      verify(object.callMethod(
+              managerName, 'Uninhibit', [const DBusUint32(1337)],
+              replySignature: DBusSignature('')))
+          .called(1);
+    });
+
+    test('IsInhibited', () async {
+      final object = createMockRemoteObject(isInhibited: true);
+      final manager = GnomeSessionManager(object: object);
+      final isInhibited =
+          await manager.isInhibited({GnomeInhibitionFlag.autoMount});
+      verify(object.callMethod(
+              managerName, 'IsInhibited', [const DBusUint32(16)],
+              replySignature: DBusSignature('b')))
+          .called(1);
+      expect(isInhibited, true);
+    });
   });
 
   group('simple API', () {
@@ -131,6 +176,8 @@ MockDBusRemoteObject createMockRemoteObject({
   Map<String, DBusValue>? properties,
   bool canShutdown = false,
   bool isSessionRunning = false,
+  int inhibitionCookie = 0,
+  bool isInhibited = false,
 }) {
   final dbus = MockDBusClient();
   final object = MockDBusRemoteObject();
@@ -157,5 +204,16 @@ MockDBusRemoteObject createMockRemoteObject({
           replySignature: DBusSignature('b')))
       .thenAnswer((_) async =>
           DBusMethodSuccessResponse([DBusBoolean(isSessionRunning)]));
+  when(object.callMethod(managerName, 'Inhibit', any,
+          replySignature: DBusSignature('u')))
+      .thenAnswer((_) async =>
+          DBusMethodSuccessResponse([DBusUint32(inhibitionCookie)]));
+  when(object.callMethod(managerName, 'Uninhibit', any,
+          replySignature: DBusSignature('')))
+      .thenAnswer((_) async => DBusMethodSuccessResponse());
+  when(object.callMethod(managerName, 'IsInhibited', any,
+          replySignature: DBusSignature('b')))
+      .thenAnswer(
+          (_) async => DBusMethodSuccessResponse([DBusBoolean(isInhibited)]));
   return object;
 }
