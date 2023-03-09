@@ -22,7 +22,7 @@ enum GnomeInhibitionFlag {
   /// Inhibit logging out
   logout,
 
-  /// Inhbit user switching
+  /// Inhibit user switching
   switchUser,
 
   /// Inhibit suspending the session or computer
