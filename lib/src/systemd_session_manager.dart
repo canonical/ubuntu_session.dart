@@ -1,10 +1,69 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dbus/dbus.dart';
 import 'package:meta/meta.dart';
 
 import 'simple_session_manager.dart';
 import 'util.dart';
+
+enum SystemdInhibitionFlag {
+  /// Inhibit system power-off and reboot
+  shutdown,
+
+  /// Inhibit suspend and hibernation
+  sleep,
+
+  /// Inhibit that the system goes into idle mode
+  idle,
+
+  /// Inhibit low-level handling of the hardware power key
+  handlePowerKey,
+
+  /// Inhibit low-level handling of the hardware suspend key
+  handleSuspendKey,
+
+  /// Inhibit low-level handling of the hardware hibernate key
+  handleHibernateKey,
+
+  /// Inhibit low-level handling of the hardware lid switch
+  handleLidSwitch;
+
+  @override
+  String toString() {
+    switch (this) {
+      case SystemdInhibitionFlag.shutdown:
+        return 'shutdown';
+      case SystemdInhibitionFlag.sleep:
+        return 'sleep';
+      case SystemdInhibitionFlag.idle:
+        return 'idle';
+      case SystemdInhibitionFlag.handlePowerKey:
+        return 'handle-power-key';
+      case SystemdInhibitionFlag.handleSuspendKey:
+        return 'handle-suspend-key';
+      case SystemdInhibitionFlag.handleHibernateKey:
+        return 'handle-hibernate-key';
+      case SystemdInhibitionFlag.handleLidSwitch:
+        return 'handle-lid-switch';
+    }
+  }
+}
+
+enum SystemdInhibitionMode {
+  block,
+  delay;
+
+  @override
+  String toString() {
+    switch (this) {
+      case SystemdInhibitionMode.block:
+        return 'block';
+      case SystemdInhibitionMode.delay:
+        return 'delay';
+    }
+  }
+}
 
 /// The client that connects to the SystemD Session Manager
 class SystemdSessionManager {
@@ -125,6 +184,23 @@ class SystemdSessionManager {
         .callMethod(managerName, 'CanReboot', [],
             replySignature: DBusSignature('s'))
         .then((response) => response.values.first.asString());
+  }
+
+  /// Create an inhibition lock.
+  Future<ResourceHandle> inhibit(Set<SystemdInhibitionFlag> what, String who,
+      String why, SystemdInhibitionMode mode) async {
+    return _object
+        .callMethod(
+            managerName,
+            'Inhibit',
+            [
+              DBusString(what.join(':')),
+              DBusString(who),
+              DBusString(why),
+              DBusString(mode.name),
+            ],
+            replySignature: DBusSignature('h'))
+        .then((response) => response.values.first.asUnixFd());
   }
 
   /// Connects to the Session Manager service.
