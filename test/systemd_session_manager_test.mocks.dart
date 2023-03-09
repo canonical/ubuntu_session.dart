@@ -3,16 +3,17 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
+import 'dart:async' as _i7;
+import 'dart:io' as _i6;
 
-import 'package:dbus/dbus.dart' as _i8;
+import 'package:dbus/dbus.dart' as _i9;
 import 'package:dbus/src/dbus_client.dart' as _i2;
 import 'package:dbus/src/dbus_introspect.dart' as _i5;
 import 'package:dbus/src/dbus_method_response.dart' as _i3;
-import 'package:dbus/src/dbus_object.dart' as _i7;
+import 'package:dbus/src/dbus_object.dart' as _i8;
 import 'package:dbus/src/dbus_value.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:ubuntu_session/src/systemd_session_manager.dart' as _i9;
+import 'package:ubuntu_session/src/systemd_session_manager.dart' as _i10;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -89,6 +90,17 @@ class _FakeDBusValue_5 extends _i1.SmartFake implements _i4.DBusValue {
         );
 }
 
+class _FakeResourceHandle_6 extends _i1.SmartFake
+    implements _i6.ResourceHandle {
+  _FakeResourceHandle_6(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [DBusClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -113,32 +125,32 @@ class MockDBusClient extends _i1.Mock implements _i2.DBusClient {
         returnValue: <String>[],
       ) as Iterable<String>);
   @override
-  _i6.Stream<String> get nameAcquired => (super.noSuchMethod(
+  _i7.Stream<String> get nameAcquired => (super.noSuchMethod(
         Invocation.getter(#nameAcquired),
-        returnValue: _i6.Stream<String>.empty(),
-      ) as _i6.Stream<String>);
+        returnValue: _i7.Stream<String>.empty(),
+      ) as _i7.Stream<String>);
   @override
-  _i6.Stream<String> get nameLost => (super.noSuchMethod(
+  _i7.Stream<String> get nameLost => (super.noSuchMethod(
         Invocation.getter(#nameLost),
-        returnValue: _i6.Stream<String>.empty(),
-      ) as _i6.Stream<String>);
+        returnValue: _i7.Stream<String>.empty(),
+      ) as _i7.Stream<String>);
   @override
-  _i6.Stream<_i2.DBusNameOwnerChangedEvent> get nameOwnerChanged =>
+  _i7.Stream<_i2.DBusNameOwnerChangedEvent> get nameOwnerChanged =>
       (super.noSuchMethod(
         Invocation.getter(#nameOwnerChanged),
-        returnValue: _i6.Stream<_i2.DBusNameOwnerChangedEvent>.empty(),
-      ) as _i6.Stream<_i2.DBusNameOwnerChangedEvent>);
+        returnValue: _i7.Stream<_i2.DBusNameOwnerChangedEvent>.empty(),
+      ) as _i7.Stream<_i2.DBusNameOwnerChangedEvent>);
   @override
-  _i6.Future<void> close() => (super.noSuchMethod(
+  _i7.Future<void> close() => (super.noSuchMethod(
         Invocation.method(
           #close,
           [],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i6.Future<_i2.DBusRequestNameReply> requestName(
+  _i7.Future<_i2.DBusRequestNameReply> requestName(
     String? name, {
     Set<_i2.DBusRequestNameFlag>? flags = const {},
   }) =>
@@ -148,97 +160,97 @@ class MockDBusClient extends _i1.Mock implements _i2.DBusClient {
           [name],
           {#flags: flags},
         ),
-        returnValue: _i6.Future<_i2.DBusRequestNameReply>.value(
+        returnValue: _i7.Future<_i2.DBusRequestNameReply>.value(
             _i2.DBusRequestNameReply.primaryOwner),
-      ) as _i6.Future<_i2.DBusRequestNameReply>);
+      ) as _i7.Future<_i2.DBusRequestNameReply>);
   @override
-  _i6.Future<_i2.DBusReleaseNameReply> releaseName(String? name) =>
+  _i7.Future<_i2.DBusReleaseNameReply> releaseName(String? name) =>
       (super.noSuchMethod(
         Invocation.method(
           #releaseName,
           [name],
         ),
-        returnValue: _i6.Future<_i2.DBusReleaseNameReply>.value(
+        returnValue: _i7.Future<_i2.DBusReleaseNameReply>.value(
             _i2.DBusReleaseNameReply.released),
-      ) as _i6.Future<_i2.DBusReleaseNameReply>);
+      ) as _i7.Future<_i2.DBusReleaseNameReply>);
   @override
-  _i6.Future<List<String>> listQueuedOwners(String? name) =>
+  _i7.Future<List<String>> listQueuedOwners(String? name) =>
       (super.noSuchMethod(
         Invocation.method(
           #listQueuedOwners,
           [name],
         ),
-        returnValue: _i6.Future<List<String>>.value(<String>[]),
-      ) as _i6.Future<List<String>>);
+        returnValue: _i7.Future<List<String>>.value(<String>[]),
+      ) as _i7.Future<List<String>>);
   @override
-  _i6.Future<List<String>> listNames() => (super.noSuchMethod(
+  _i7.Future<List<String>> listNames() => (super.noSuchMethod(
         Invocation.method(
           #listNames,
           [],
         ),
-        returnValue: _i6.Future<List<String>>.value(<String>[]),
-      ) as _i6.Future<List<String>>);
+        returnValue: _i7.Future<List<String>>.value(<String>[]),
+      ) as _i7.Future<List<String>>);
   @override
-  _i6.Future<List<String>> listActivatableNames() => (super.noSuchMethod(
+  _i7.Future<List<String>> listActivatableNames() => (super.noSuchMethod(
         Invocation.method(
           #listActivatableNames,
           [],
         ),
-        returnValue: _i6.Future<List<String>>.value(<String>[]),
-      ) as _i6.Future<List<String>>);
+        returnValue: _i7.Future<List<String>>.value(<String>[]),
+      ) as _i7.Future<List<String>>);
   @override
-  _i6.Future<_i2.DBusStartServiceByNameReply> startServiceByName(
+  _i7.Future<_i2.DBusStartServiceByNameReply> startServiceByName(
           String? name) =>
       (super.noSuchMethod(
         Invocation.method(
           #startServiceByName,
           [name],
         ),
-        returnValue: _i6.Future<_i2.DBusStartServiceByNameReply>.value(
+        returnValue: _i7.Future<_i2.DBusStartServiceByNameReply>.value(
             _i2.DBusStartServiceByNameReply.success),
-      ) as _i6.Future<_i2.DBusStartServiceByNameReply>);
+      ) as _i7.Future<_i2.DBusStartServiceByNameReply>);
   @override
-  _i6.Future<bool> nameHasOwner(String? name) => (super.noSuchMethod(
+  _i7.Future<bool> nameHasOwner(String? name) => (super.noSuchMethod(
         Invocation.method(
           #nameHasOwner,
           [name],
         ),
-        returnValue: _i6.Future<bool>.value(false),
-      ) as _i6.Future<bool>);
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
   @override
-  _i6.Future<String?> getNameOwner(String? name) => (super.noSuchMethod(
+  _i7.Future<String?> getNameOwner(String? name) => (super.noSuchMethod(
         Invocation.method(
           #getNameOwner,
           [name],
         ),
-        returnValue: _i6.Future<String?>.value(),
-      ) as _i6.Future<String?>);
+        returnValue: _i7.Future<String?>.value(),
+      ) as _i7.Future<String?>);
   @override
-  _i6.Future<int> getConnectionUnixUser(String? name) => (super.noSuchMethod(
+  _i7.Future<int> getConnectionUnixUser(String? name) => (super.noSuchMethod(
         Invocation.method(
           #getConnectionUnixUser,
           [name],
         ),
-        returnValue: _i6.Future<int>.value(0),
-      ) as _i6.Future<int>);
+        returnValue: _i7.Future<int>.value(0),
+      ) as _i7.Future<int>);
   @override
-  _i6.Future<int> getConnectionUnixProcessId(String? name) =>
+  _i7.Future<int> getConnectionUnixProcessId(String? name) =>
       (super.noSuchMethod(
         Invocation.method(
           #getConnectionUnixProcessId,
           [name],
         ),
-        returnValue: _i6.Future<int>.value(0),
-      ) as _i6.Future<int>);
+        returnValue: _i7.Future<int>.value(0),
+      ) as _i7.Future<int>);
   @override
-  _i6.Future<_i2.DBusProcessCredentials> getConnectionCredentials(
+  _i7.Future<_i2.DBusProcessCredentials> getConnectionCredentials(
           String? name) =>
       (super.noSuchMethod(
         Invocation.method(
           #getConnectionCredentials,
           [name],
         ),
-        returnValue: _i6.Future<_i2.DBusProcessCredentials>.value(
+        returnValue: _i7.Future<_i2.DBusProcessCredentials>.value(
             _FakeDBusProcessCredentials_0(
           this,
           Invocation.method(
@@ -246,37 +258,37 @@ class MockDBusClient extends _i1.Mock implements _i2.DBusClient {
             [name],
           ),
         )),
-      ) as _i6.Future<_i2.DBusProcessCredentials>);
+      ) as _i7.Future<_i2.DBusProcessCredentials>);
   @override
-  _i6.Future<String> getId() => (super.noSuchMethod(
+  _i7.Future<String> getId() => (super.noSuchMethod(
         Invocation.method(
           #getId,
           [],
         ),
-        returnValue: _i6.Future<String>.value(''),
-      ) as _i6.Future<String>);
+        returnValue: _i7.Future<String>.value(''),
+      ) as _i7.Future<String>);
   @override
-  _i6.Future<void> ping([String? destination = r'org.freedesktop.DBus']) =>
+  _i7.Future<void> ping([String? destination = r'org.freedesktop.DBus']) =>
       (super.noSuchMethod(
         Invocation.method(
           #ping,
           [destination],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i6.Future<String> getMachineId(
+  _i7.Future<String> getMachineId(
           [String? destination = r'org.freedesktop.DBus']) =>
       (super.noSuchMethod(
         Invocation.method(
           #getMachineId,
           [destination],
         ),
-        returnValue: _i6.Future<String>.value(''),
-      ) as _i6.Future<String>);
+        returnValue: _i7.Future<String>.value(''),
+      ) as _i7.Future<String>);
   @override
-  _i6.Future<_i3.DBusMethodSuccessResponse> callMethod({
+  _i7.Future<_i3.DBusMethodSuccessResponse> callMethod({
     String? destination,
     required _i4.DBusObjectPath? path,
     String? interface,
@@ -303,7 +315,7 @@ class MockDBusClient extends _i1.Mock implements _i2.DBusClient {
             #allowInteractiveAuthorization: allowInteractiveAuthorization,
           },
         ),
-        returnValue: _i6.Future<_i3.DBusMethodSuccessResponse>.value(
+        returnValue: _i7.Future<_i3.DBusMethodSuccessResponse>.value(
             _FakeDBusMethodSuccessResponse_1(
           this,
           Invocation.method(
@@ -322,9 +334,9 @@ class MockDBusClient extends _i1.Mock implements _i2.DBusClient {
             },
           ),
         )),
-      ) as _i6.Future<_i3.DBusMethodSuccessResponse>);
+      ) as _i7.Future<_i3.DBusMethodSuccessResponse>);
   @override
-  _i6.Future<void> emitSignal({
+  _i7.Future<void> emitSignal({
     String? destination,
     required _i4.DBusObjectPath? path,
     required String? interface,
@@ -343,35 +355,35 @@ class MockDBusClient extends _i1.Mock implements _i2.DBusClient {
             #values: values,
           },
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i6.Future<void> registerObject(_i7.DBusObject? object) =>
+  _i7.Future<void> registerObject(_i8.DBusObject? object) =>
       (super.noSuchMethod(
         Invocation.method(
           #registerObject,
           [object],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i6.Future<void> unregisterObject(_i7.DBusObject? object) =>
+  _i7.Future<void> unregisterObject(_i8.DBusObject? object) =>
       (super.noSuchMethod(
         Invocation.method(
           #unregisterObject,
           [object],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
 }
 
 /// A class which mocks [DBusRemoteObject].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDBusRemoteObject extends _i1.Mock implements _i8.DBusRemoteObject {
+class MockDBusRemoteObject extends _i1.Mock implements _i9.DBusRemoteObject {
   MockDBusRemoteObject() {
     _i1.throwOnMissingStub(this);
   }
@@ -398,14 +410,14 @@ class MockDBusRemoteObject extends _i1.Mock implements _i8.DBusRemoteObject {
         ),
       ) as _i4.DBusObjectPath);
   @override
-  _i6.Stream<_i8.DBusPropertiesChangedSignal> get propertiesChanged =>
+  _i7.Stream<_i9.DBusPropertiesChangedSignal> get propertiesChanged =>
       (super.noSuchMethod(
         Invocation.getter(#propertiesChanged),
-        returnValue: _i6.Stream<_i8.DBusPropertiesChangedSignal>.empty(),
-      ) as _i6.Stream<_i8.DBusPropertiesChangedSignal>);
+        returnValue: _i7.Stream<_i9.DBusPropertiesChangedSignal>.empty(),
+      ) as _i7.Stream<_i9.DBusPropertiesChangedSignal>);
   @override
   set propertiesChanged(
-          _i6.Stream<_i8.DBusPropertiesChangedSignal>? _propertiesChanged) =>
+          _i7.Stream<_i9.DBusPropertiesChangedSignal>? _propertiesChanged) =>
       super.noSuchMethod(
         Invocation.setter(
           #propertiesChanged,
@@ -414,22 +426,22 @@ class MockDBusRemoteObject extends _i1.Mock implements _i8.DBusRemoteObject {
         returnValueForMissingStub: null,
       );
   @override
-  _i6.Future<_i5.DBusIntrospectNode> introspect() => (super.noSuchMethod(
+  _i7.Future<_i5.DBusIntrospectNode> introspect() => (super.noSuchMethod(
         Invocation.method(
           #introspect,
           [],
         ),
         returnValue:
-            _i6.Future<_i5.DBusIntrospectNode>.value(_FakeDBusIntrospectNode_4(
+            _i7.Future<_i5.DBusIntrospectNode>.value(_FakeDBusIntrospectNode_4(
           this,
           Invocation.method(
             #introspect,
             [],
           ),
         )),
-      ) as _i6.Future<_i5.DBusIntrospectNode>);
+      ) as _i7.Future<_i5.DBusIntrospectNode>);
   @override
-  _i6.Future<_i4.DBusValue> getProperty(
+  _i7.Future<_i4.DBusValue> getProperty(
     String? interface,
     String? name, {
     _i4.DBusSignature? signature,
@@ -443,7 +455,7 @@ class MockDBusRemoteObject extends _i1.Mock implements _i8.DBusRemoteObject {
           ],
           {#signature: signature},
         ),
-        returnValue: _i6.Future<_i4.DBusValue>.value(_FakeDBusValue_5(
+        returnValue: _i7.Future<_i4.DBusValue>.value(_FakeDBusValue_5(
           this,
           Invocation.method(
             #getProperty,
@@ -454,19 +466,19 @@ class MockDBusRemoteObject extends _i1.Mock implements _i8.DBusRemoteObject {
             {#signature: signature},
           ),
         )),
-      ) as _i6.Future<_i4.DBusValue>);
+      ) as _i7.Future<_i4.DBusValue>);
   @override
-  _i6.Future<Map<String, _i4.DBusValue>> getAllProperties(String? interface) =>
+  _i7.Future<Map<String, _i4.DBusValue>> getAllProperties(String? interface) =>
       (super.noSuchMethod(
         Invocation.method(
           #getAllProperties,
           [interface],
         ),
-        returnValue: _i6.Future<Map<String, _i4.DBusValue>>.value(
+        returnValue: _i7.Future<Map<String, _i4.DBusValue>>.value(
             <String, _i4.DBusValue>{}),
-      ) as _i6.Future<Map<String, _i4.DBusValue>>);
+      ) as _i7.Future<Map<String, _i4.DBusValue>>);
   @override
-  _i6.Future<void> setProperty(
+  _i7.Future<void> setProperty(
     String? interface,
     String? name,
     _i4.DBusValue? value,
@@ -480,11 +492,11 @@ class MockDBusRemoteObject extends _i1.Mock implements _i8.DBusRemoteObject {
             value,
           ],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i6.Future<_i3.DBusMethodSuccessResponse> callMethod(
+  _i7.Future<_i3.DBusMethodSuccessResponse> callMethod(
     String? interface,
     String? name,
     Iterable<_i4.DBusValue>? values, {
@@ -508,7 +520,7 @@ class MockDBusRemoteObject extends _i1.Mock implements _i8.DBusRemoteObject {
             #allowInteractiveAuthorization: allowInteractiveAuthorization,
           },
         ),
-        returnValue: _i6.Future<_i3.DBusMethodSuccessResponse>.value(
+        returnValue: _i7.Future<_i3.DBusMethodSuccessResponse>.value(
             _FakeDBusMethodSuccessResponse_1(
           this,
           Invocation.method(
@@ -526,14 +538,14 @@ class MockDBusRemoteObject extends _i1.Mock implements _i8.DBusRemoteObject {
             },
           ),
         )),
-      ) as _i6.Future<_i3.DBusMethodSuccessResponse>);
+      ) as _i7.Future<_i3.DBusMethodSuccessResponse>);
 }
 
 /// A class which mocks [SystemdSessionManager].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSystemdSessionManager extends _i1.Mock
-    implements _i9.SystemdSessionManager {
+    implements _i10.SystemdSessionManager {
   MockSystemdSessionManager() {
     _i1.throwOnMissingStub(this);
   }
@@ -544,159 +556,189 @@ class MockSystemdSessionManager extends _i1.Mock
         returnValue: false,
       ) as bool);
   @override
-  _i6.Stream<List<String>> get propertiesChanged => (super.noSuchMethod(
+  _i7.Stream<List<String>> get propertiesChanged => (super.noSuchMethod(
         Invocation.getter(#propertiesChanged),
-        returnValue: _i6.Stream<List<String>>.empty(),
-      ) as _i6.Stream<List<String>>);
+        returnValue: _i7.Stream<List<String>>.empty(),
+      ) as _i7.Stream<List<String>>);
   @override
-  _i6.Future<void> halt(bool? interactive) => (super.noSuchMethod(
+  _i7.Future<void> halt(bool? interactive) => (super.noSuchMethod(
         Invocation.method(
           #halt,
           [interactive],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i6.Future<void> hibernate(bool? interactive) => (super.noSuchMethod(
+  _i7.Future<void> hibernate(bool? interactive) => (super.noSuchMethod(
         Invocation.method(
           #hibernate,
           [interactive],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i6.Future<Iterable<_i9.SystemdSession>> listSessions() =>
+  _i7.Future<Iterable<_i10.SystemdSession>> listSessions() =>
       (super.noSuchMethod(
         Invocation.method(
           #listSessions,
           [],
         ),
-        returnValue: _i6.Future<Iterable<_i9.SystemdSession>>.value(
-            <_i9.SystemdSession>[]),
-      ) as _i6.Future<Iterable<_i9.SystemdSession>>);
+        returnValue: _i7.Future<Iterable<_i10.SystemdSession>>.value(
+            <_i10.SystemdSession>[]),
+      ) as _i7.Future<Iterable<_i10.SystemdSession>>);
   @override
-  _i6.Future<void> powerOff(bool? interactive) => (super.noSuchMethod(
+  _i7.Future<void> powerOff(bool? interactive) => (super.noSuchMethod(
         Invocation.method(
           #powerOff,
           [interactive],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i6.Future<void> reboot(bool? interactive) => (super.noSuchMethod(
+  _i7.Future<void> reboot(bool? interactive) => (super.noSuchMethod(
         Invocation.method(
           #reboot,
           [interactive],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i6.Future<void> suspend(bool? interactive) => (super.noSuchMethod(
+  _i7.Future<void> suspend(bool? interactive) => (super.noSuchMethod(
         Invocation.method(
           #suspend,
           [interactive],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i6.Future<String> canHalt() => (super.noSuchMethod(
+  _i7.Future<String> canHalt() => (super.noSuchMethod(
         Invocation.method(
           #canHalt,
           [],
         ),
-        returnValue: _i6.Future<String>.value(''),
-      ) as _i6.Future<String>);
+        returnValue: _i7.Future<String>.value(''),
+      ) as _i7.Future<String>);
   @override
-  _i6.Future<String> canHibernate() => (super.noSuchMethod(
+  _i7.Future<String> canHibernate() => (super.noSuchMethod(
         Invocation.method(
           #canHibernate,
           [],
         ),
-        returnValue: _i6.Future<String>.value(''),
-      ) as _i6.Future<String>);
+        returnValue: _i7.Future<String>.value(''),
+      ) as _i7.Future<String>);
   @override
-  _i6.Future<String> canPowerOff() => (super.noSuchMethod(
+  _i7.Future<String> canPowerOff() => (super.noSuchMethod(
         Invocation.method(
           #canPowerOff,
           [],
         ),
-        returnValue: _i6.Future<String>.value(''),
-      ) as _i6.Future<String>);
+        returnValue: _i7.Future<String>.value(''),
+      ) as _i7.Future<String>);
   @override
-  _i6.Future<String> canSuspend() => (super.noSuchMethod(
+  _i7.Future<String> canSuspend() => (super.noSuchMethod(
         Invocation.method(
           #canSuspend,
           [],
         ),
-        returnValue: _i6.Future<String>.value(''),
-      ) as _i6.Future<String>);
+        returnValue: _i7.Future<String>.value(''),
+      ) as _i7.Future<String>);
   @override
-  _i6.Future<String> canReboot() => (super.noSuchMethod(
+  _i7.Future<String> canReboot() => (super.noSuchMethod(
         Invocation.method(
           #canReboot,
           [],
         ),
-        returnValue: _i6.Future<String>.value(''),
-      ) as _i6.Future<String>);
+        returnValue: _i7.Future<String>.value(''),
+      ) as _i7.Future<String>);
   @override
-  _i6.Future<void> connect() => (super.noSuchMethod(
+  _i7.Future<_i6.ResourceHandle> inhibit(
+    Set<_i10.SystemdInhibitionFlag>? what,
+    String? who,
+    String? why,
+    _i10.SystemdInhibitionMode? mode,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #inhibit,
+          [
+            what,
+            who,
+            why,
+            mode,
+          ],
+        ),
+        returnValue: _i7.Future<_i6.ResourceHandle>.value(_FakeResourceHandle_6(
+          this,
+          Invocation.method(
+            #inhibit,
+            [
+              what,
+              who,
+              why,
+              mode,
+            ],
+          ),
+        )),
+      ) as _i7.Future<_i6.ResourceHandle>);
+  @override
+  _i7.Future<void> connect() => (super.noSuchMethod(
         Invocation.method(
           #connect,
           [],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i6.Future<void> close() => (super.noSuchMethod(
+  _i7.Future<void> close() => (super.noSuchMethod(
         Invocation.method(
           #close,
           [],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
 }
 
 /// A class which mocks [SystemdSession].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSystemdSession extends _i1.Mock implements _i9.SystemdSession {
+class MockSystemdSession extends _i1.Mock implements _i10.SystemdSession {
   MockSystemdSession() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<String> get id => (super.noSuchMethod(
+  _i7.Future<String> get id => (super.noSuchMethod(
         Invocation.getter(#id),
-        returnValue: _i6.Future<String>.value(''),
-      ) as _i6.Future<String>);
+        returnValue: _i7.Future<String>.value(''),
+      ) as _i7.Future<String>);
   @override
-  _i6.Future<bool> get active => (super.noSuchMethod(
+  _i7.Future<bool> get active => (super.noSuchMethod(
         Invocation.getter(#active),
-        returnValue: _i6.Future<bool>.value(false),
-      ) as _i6.Future<bool>);
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
   @override
-  _i6.Future<void> lock() => (super.noSuchMethod(
+  _i7.Future<void> lock() => (super.noSuchMethod(
         Invocation.method(
           #lock,
           [],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
   @override
-  _i6.Future<void> terminate() => (super.noSuchMethod(
+  _i7.Future<void> terminate() => (super.noSuchMethod(
         Invocation.method(
           #terminate,
           [],
         ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
 }
