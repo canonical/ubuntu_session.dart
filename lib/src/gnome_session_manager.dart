@@ -55,12 +55,8 @@ class GnomeSessionManager {
   String get sessionName => _getProperty('SessionName', '');
 
   /// Request a logout dialog.
-  Future<void> logout({Set<GnomeLogoutMode> mode = const {}}) {
-    var logoutMode = 0;
-    for (final flag in mode) {
-      logoutMode |= flag.index;
-    }
-    return _object.callMethod(managerName, 'Logout', [DBusUint32(logoutMode)],
+  Future<void> logout({GnomeLogoutMode mode = GnomeLogoutMode.normal}) {
+    return _object.callMethod(managerName, 'Logout', [DBusUint32(mode.index)],
         replySignature: DBusSignature(''));
   }
 

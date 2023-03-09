@@ -559,7 +559,8 @@ class MockGnomeSessionManager extends _i1.Mock
         returnValue: _i6.Stream<List<String>>.empty(),
       ) as _i6.Stream<List<String>>);
   @override
-  _i6.Future<void> logout({Set<_i9.GnomeLogoutMode>? mode = const {}}) =>
+  _i6.Future<void> logout(
+          {_i9.GnomeLogoutMode? mode = _i9.GnomeLogoutMode.normal}) =>
       (super.noSuchMethod(
         Invocation.method(
           #logout,

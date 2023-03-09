@@ -44,15 +44,11 @@ void main() {
     test('Logout', () async {
       final object = createMockRemoteObject();
       final manager = GnomeSessionManager(object: object);
-      await manager
-          .logout(mode: {GnomeLogoutMode.force, GnomeLogoutMode.noConfirm});
+      await manager.logout(mode: GnomeLogoutMode.force);
       verify(object.callMethod(
         managerName,
         'Logout',
-        [
-          DBusUint32(
-              GnomeLogoutMode.force.index | GnomeLogoutMode.noConfirm.index)
-        ],
+        [DBusUint32(GnomeLogoutMode.force.index)],
         replySignature: DBusSignature(''),
       )).called(1);
     });
