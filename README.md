@@ -52,7 +52,11 @@ void main() async {
 - `CanShutdown()`
 - `IsSessionRunning()`
 - `Logout()`
+- `Inhibit()`
+- `Uninhibit()`
+- `IsInhibited()`
 #### Properties
+- `Renderer`
 - `SessionName`
 - `SessionIsActive`
 
@@ -82,6 +86,9 @@ void main() async {
 - `CanShutdown()`
 - `IsSessionRunning()`
 - `Logout()`
+- `Inhibit()`
+- `Uninhibit()`
+- `IsInhibited()`
 #### Properties
 - `Renderer`
 
@@ -117,6 +124,7 @@ void main() async {
 - `CanReboot()`
 - `CanSuspend()`
 - `ListSessions()`
+- `Inhibit()`
 #### Properties
 - `OnExternalPower`
 
