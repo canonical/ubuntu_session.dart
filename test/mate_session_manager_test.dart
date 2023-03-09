@@ -38,15 +38,11 @@ void main() {
     test('Logout', () async {
       final object = createMockRemoteObject();
       final manager = MateSessionManager(object: object);
-      await manager
-          .logout(mode: {MateLogoutMode.force, MateLogoutMode.noConfirm});
+      await manager.logout(mode: MateLogoutMode.force);
       verify(object.callMethod(
         managerName,
         'Logout',
-        [
-          DBusUint32(
-              MateLogoutMode.force.index | MateLogoutMode.noConfirm.index)
-        ],
+        [DBusUint32(MateLogoutMode.force.index)],
         replySignature: DBusSignature(''),
       )).called(1);
     });

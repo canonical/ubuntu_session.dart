@@ -48,12 +48,8 @@ class MateSessionManager {
   String get renderer => _getProperty('Renderer', '');
 
   /// Request a logout dialog.
-  Future<void> logout({Set<MateLogoutMode> mode = const {}}) {
-    var logoutMode = 0;
-    for (final flag in mode) {
-      logoutMode |= flag.index;
-    }
-    return _object.callMethod(managerName, 'Logout', [DBusUint32(logoutMode)],
+  Future<void> logout({MateLogoutMode mode = MateLogoutMode.normal}) {
+    return _object.callMethod(managerName, 'Logout', [DBusUint32(mode.index)],
         replySignature: DBusSignature(''));
   }
 
