@@ -605,21 +605,22 @@ class MockGnomeSessionManager extends _i1.Mock
         returnValue: _i6.Future<bool>.value(false),
       ) as _i6.Future<bool>);
   @override
-  _i6.Future<int> inhibit(
-    String? appId,
-    int? topLevelXId,
-    String? reason,
-    Set<_i9.GnomeInhibitionFlag>? flags,
-  ) =>
+  _i6.Future<int> inhibit({
+    required String? appId,
+    required int? topLevelXId,
+    required String? reason,
+    required Set<_i9.GnomeInhibitionFlag>? flags,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #inhibit,
-          [
-            appId,
-            topLevelXId,
-            reason,
-            flags,
-          ],
+          [],
+          {
+            #appId: appId,
+            #topLevelXId: topLevelXId,
+            #reason: reason,
+            #flags: flags,
+          },
         ),
         returnValue: _i6.Future<int>.value(0),
       ) as _i6.Future<int>);

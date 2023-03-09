@@ -197,10 +197,13 @@ void main() {
       final manager = SystemdSessionManager(object: object);
       await manager.connect();
       final fd = await manager.inhibit(
-        {SystemdInhibitionFlag.handlePowerKey, SystemdInhibitionFlag.idle},
-        'who',
-        'why',
-        SystemdInhibitionMode.block,
+        what: {
+          SystemdInhibitionFlag.handlePowerKey,
+          SystemdInhibitionFlag.idle
+        },
+        who: 'who',
+        why: 'why',
+        mode: SystemdInhibitionMode.block,
       );
       expect(fd, isA<ResourceHandle>());
       verify(object.callMethod(

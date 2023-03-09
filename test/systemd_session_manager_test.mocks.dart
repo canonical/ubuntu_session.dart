@@ -656,32 +656,34 @@ class MockSystemdSessionManager extends _i1.Mock
         returnValue: _i7.Future<String>.value(''),
       ) as _i7.Future<String>);
   @override
-  _i7.Future<_i6.ResourceHandle> inhibit(
-    Set<_i10.SystemdInhibitionFlag>? what,
-    String? who,
-    String? why,
-    _i10.SystemdInhibitionMode? mode,
-  ) =>
+  _i7.Future<_i6.ResourceHandle> inhibit({
+    required Set<_i10.SystemdInhibitionFlag>? what,
+    required String? who,
+    required String? why,
+    required _i10.SystemdInhibitionMode? mode,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #inhibit,
-          [
-            what,
-            who,
-            why,
-            mode,
-          ],
+          [],
+          {
+            #what: what,
+            #who: who,
+            #why: why,
+            #mode: mode,
+          },
         ),
         returnValue: _i7.Future<_i6.ResourceHandle>.value(_FakeResourceHandle_6(
           this,
           Invocation.method(
             #inhibit,
-            [
-              what,
-              who,
-              why,
-              mode,
-            ],
+            [],
+            {
+              #what: what,
+              #who: who,
+              #why: why,
+              #mode: mode,
+            },
           ),
         )),
       ) as _i7.Future<_i6.ResourceHandle>);

@@ -187,8 +187,12 @@ class SystemdSessionManager {
   }
 
   /// Create an inhibition lock.
-  Future<ResourceHandle> inhibit(Set<SystemdInhibitionFlag> what, String who,
-      String why, SystemdInhibitionMode mode) async {
+  Future<ResourceHandle> inhibit({
+    required Set<SystemdInhibitionFlag> what,
+    required String who,
+    required String why,
+    required SystemdInhibitionMode mode,
+  }) async {
     return _object
         .callMethod(
             managerName,

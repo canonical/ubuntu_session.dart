@@ -79,8 +79,12 @@ void main() {
     test('Inhibit', () async {
       final object = createMockRemoteObject(inhibitionCookie: 1337);
       final manager = MateSessionManager(object: object);
-      final cookie = await manager.inhibit('appId', 42, 'foo',
-          {MateInhibitionFlag.logout, MateInhibitionFlag.switchUser});
+      final cookie = await manager.inhibit(
+        appId: 'appId',
+        topLevelXId: 42,
+        reason: 'foo',
+        flags: {MateInhibitionFlag.logout, MateInhibitionFlag.switchUser},
+      );
       verify(object.callMethod(
               managerName,
               'Inhibit',

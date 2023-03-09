@@ -106,8 +106,12 @@ class GnomeSessionManager {
   }
 
   /// Create an inhibition lock.
-  Future<int> inhibit(String appId, int topLevelXId, String reason,
-      Set<GnomeInhibitionFlag> flags) async {
+  Future<int> inhibit({
+    required String appId,
+    required int topLevelXId,
+    required String reason,
+    required Set<GnomeInhibitionFlag> flags,
+  }) async {
     return _object
         .callMethod(
             managerName,

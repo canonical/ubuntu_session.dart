@@ -94,8 +94,12 @@ void main() {
     test('Inhibit', () async {
       final object = createMockRemoteObject(inhibitionCookie: 1337);
       final manager = GnomeSessionManager(object: object);
-      final cookie = await manager.inhibit('appId', 42, 'foo',
-          {GnomeInhibitionFlag.logout, GnomeInhibitionFlag.switchUser});
+      final cookie = await manager.inhibit(
+        appId: 'appId',
+        topLevelXId: 42,
+        reason: 'foo',
+        flags: {GnomeInhibitionFlag.logout, GnomeInhibitionFlag.switchUser},
+      );
       verify(object.callMethod(
               managerName,
               'Inhibit',
