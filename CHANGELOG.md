@@ -1,3 +1,8 @@
+## Unreleased
+
+- Support DBus 0.8 and Dart 3 while retaining Dart 2 support.
+- Require DBus 0.7.6 or newer for value accessor methods.
+
 ## 0.0.4
 
 - add `inhibit` methods

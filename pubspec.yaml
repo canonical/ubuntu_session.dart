@@ -5,13 +5,13 @@ issue_tracker: https://github.com/canonical/ubuntu_session.dart/issues
 version: 0.0.4
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.17.0 <4.0.0"
 
 platforms:
   linux:
 
 dependencies:
-  dbus: ^0.7.3
+  dbus: ">=0.7.6 <0.9.0"
   meta: ^1.7.0
 
 dev_dependencies:
