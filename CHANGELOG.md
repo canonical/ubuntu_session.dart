@@ -1,4 +1,4 @@
-## Unreleased
+## 0.0.5
 
 - Support DBus 0.8 and Dart 3 while retaining Dart 2 support.
 - Require DBus 0.7.6 or newer for value accessor methods.
